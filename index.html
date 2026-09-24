@@ -2094,9 +2094,11 @@
       const padmtTeixeira = -(plTeixeira * 0.70) / 2.0;
 
       // D) ANTUNES E CABRAL
+      const plAntunes = plDecourt * 0.706;
+      const ppAntunes = ppDecourt * 0.706;
       const pgeoAntunes = pgeoDecourt * 0.706;
       const padmAntunes = pgeoAntunes / 2.0;
-      const padmtAntunes = -(plDecourt * 0.55) / 2.0;
+      const padmtAntunes = -(plAntunes * 0.70) / 2.0;
 
       // Atualizar Tabela dos 4 Métodos
       document.getElementById('tblDecourtPgeo').innerText = pgeoDecourt.toFixed(2);
@@ -2226,7 +2228,7 @@
         diamCm, diamM, sM, cobrLateralCm,
         padmAdot, padmtAdot, maxReacao, minReacao, estacaMaxId, estacaMinId,
         Nk, Fx, Fy, Mx, My, Nd, Fxd, Mxd,
-        pesoBloco_tf, ppEstaca_tf,
+        pesoBloco_tf: ppBloco_tf, ppEstaca_tf,
         camadas, coords,
         metodos: {
           decourt: { pl: plDecourt, pp: ppDecourt, pgeo: pgeoDecourt, padm: padmDecourt, padmt: padmtDecourt },
@@ -3336,7 +3338,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Memorial de Cálculo - ${nomeObra} - Moura Barretto Engenharia</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com"><\/script>
   <style>
     @media print { body { font-size: 11px; } .no-print { display: none !important; } }
     body { font-family: 'Inter', system-ui, sans-serif; background: #f8f9fa; color: #1e293b; padding: 24px; }
