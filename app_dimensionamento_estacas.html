@@ -115,6 +115,7 @@
 
         <!-- Right: Actions -->
         <div class="flex items-center gap-2 sm:gap-3">
+          <span id="saveStatusIndicator" class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-green-50 border border-green-200 text-green-700 text-xs font-semibold" style="display:none;" title="Suas alterações estão salvas no navegador">💾 Salvo</span>
           <a href="https://mateusbarrettoai-max.github.io/" class="px-3.5 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 text-xs font-semibold transition-all flex items-center gap-1.5">
             <i class="fa-solid fa-house text-gray-500"></i>
             <span class="hidden sm:inline">Portal Hub</span>
@@ -533,6 +534,109 @@
 
     let chartInstance = null;
 
+    const STORAGE_KEY_ESTACAS = 'mb_estacas_state_v1';
+    let isRestoringEstacas = false;
+
+    function saveStateEstacas() {
+      if (isRestoringEstacas) return;
+      try {
+        const trs = document.querySelectorAll('#tabelaCamadasSpt tr');
+        const camadas = [];
+        trs.forEach(tr => {
+          const soloSel = tr.querySelector('.solo-select');
+          const nsptInp = tr.querySelector('.nspt-input');
+          const cotaTd = tr.querySelector('td');
+          if (soloSel && nsptInp) {
+            camadas.push({
+              cota: cotaTd ? parseInt(cotaTd.innerText) || 1 : 1,
+              solo: soloSel.value,
+              nspt: parseFloat(nsptInp.value) || 0
+            });
+          }
+        });
+
+        const data = {
+          preset: document.getElementById('presetSondagem').value,
+          nivelAgua: document.getElementById('nivelAgua').value,
+          tipoEstaca: document.getElementById('tipoEstaca').value,
+          diametroEstaca: document.getElementById('diametroEstaca').value,
+          comprimentoEstaca: document.getElementById('comprimentoEstaca').value,
+          fckConcreto: document.getElementById('fckConcreto').value,
+          fatorSeguranca: document.getElementById('fatorSeguranca').value,
+          cobrimento: document.getElementById('cobrimento').value,
+          esforcoNk: document.getElementById('esforcoNk').value,
+          esforcoMk: document.getElementById('esforcoMk').value,
+          esforcoVk: document.getElementById('esforcoVk').value,
+          camadas: camadas,
+          timestamp: Date.now()
+        };
+
+        localStorage.setItem(STORAGE_KEY_ESTACAS, JSON.stringify(data));
+        const ind = document.getElementById('saveStatusIndicator');
+        if (ind) ind.style.display = 'inline-flex';
+      } catch (e) {
+        console.warn('Erro ao salvar estado de estacas:', e);
+      }
+    }
+
+    function loadSavedStateEstacas() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_ESTACAS);
+        if (!raw) return false;
+        const data = JSON.parse(raw);
+        if (!data) return false;
+
+        isRestoringEstacas = true;
+
+        if (data.preset) document.getElementById('presetSondagem').value = data.preset;
+        if (data.nivelAgua !== undefined) document.getElementById('nivelAgua').value = data.nivelAgua;
+        if (data.tipoEstaca) document.getElementById('tipoEstaca').value = data.tipoEstaca;
+        if (data.diametroEstaca) document.getElementById('diametroEstaca').value = data.diametroEstaca;
+        if (data.comprimentoEstaca) document.getElementById('comprimentoEstaca').value = data.comprimentoEstaca;
+        if (data.fckConcreto) document.getElementById('fckConcreto').value = data.fckConcreto;
+        if (data.fatorSeguranca) document.getElementById('fatorSeguranca').value = data.fatorSeguranca;
+        if (data.cobrimento) document.getElementById('cobrimento').value = data.cobrimento;
+        if (data.esforcoNk !== undefined) document.getElementById('esforcoNk').value = data.esforcoNk;
+        if (data.esforcoMk !== undefined) document.getElementById('esforcoMk').value = data.esforcoMk;
+        if (data.esforcoVk !== undefined) document.getElementById('esforcoVk').value = data.esforcoVk;
+
+        if (Array.isArray(data.camadas) && data.camadas.length > 0) {
+          const tbody = document.getElementById('tabelaCamadasSpt');
+          tbody.innerHTML = '';
+          data.camadas.forEach(c => {
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-gray-50";
+            tr.innerHTML = `
+              <td class="p-2 text-gray-700 font-bold">${c.cota} m</td>
+              <td class="p-2">
+                <select class="bg-white border border-gray-200 rounded px-1.5 py-0.5 text-gray-800 text-xs w-full solo-select" onchange="recalcularTudo()">
+                  <option value="Areia" ${c.solo === 'Areia' ? 'selected' : ''}>Areia</option>
+                  <option value="Silte arenoso" ${c.solo === 'Silte arenoso' ? 'selected' : ''}>Silte arenoso</option>
+                  <option value="Silte argilo-arenoso" ${c.solo === 'Silte argilo-arenoso' ? 'selected' : ''}>Silte argilo-arenoso</option>
+                  <option value="Silte areno-argiloso" ${c.solo === 'Silte areno-argiloso' ? 'selected' : ''}>Silte areno-argiloso</option>
+                  <option value="Argila" ${c.solo === 'Argila' ? 'selected' : ''}>Argila</option>
+                </select>
+              </td>
+              <td class="p-2 text-center">
+                <input type="number" value="${c.nspt}" min="1" max="100" class="w-14 bg-white border border-gray-200 rounded px-1 text-center font-bold text-[#fb6624] nspt-input" oninput="recalcularTudo()" />
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+          document.getElementById('qtdCamadasInfo').innerText = `${data.camadas.length} metros`;
+        }
+
+        isRestoringEstacas = false;
+        const ind = document.getElementById('saveStatusIndicator');
+        if (ind) ind.style.display = 'inline-flex';
+        return true;
+      } catch (e) {
+        console.warn('Erro ao restaurar estado de estacas:', e);
+        isRestoringEstacas = false;
+        return false;
+      }
+    }
+
     // Carregar Preset
     function loadPreset() {
       const p = document.getElementById('presetSondagem').value;
@@ -817,6 +921,7 @@
       document.getElementById('detCompGaiola').innerText = `Lg = 6.00 m (Engastamento crítico + transpasse)`;
 
       renderSecaoSvg(diamCm, cobrCm, nBarras, bitola);
+      saveStateEstacas();
     }
 
     function renderSecaoSvg(diamCm, cobrCm, nBarras, bitolaMm) {
@@ -851,7 +956,12 @@
     }
 
     document.getElementById('printDataEmissao').innerText = new Date().toLocaleDateString('pt-BR');
-    loadPreset();
+    const restoredEstacas = loadSavedStateEstacas();
+    if (!restoredEstacas) {
+      loadPreset();
+    } else {
+      recalcularTudo();
+    }
   </script>
 </body>
 </html>
