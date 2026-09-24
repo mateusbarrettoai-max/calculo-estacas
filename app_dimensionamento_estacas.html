@@ -298,9 +298,12 @@
               <div>
                 <label class="text-gray-600 font-medium block mb-1">Arranjo do Bloco de Coroamento:</label>
                 <select id="selNumEstacas" onchange="onNumEstacasChange()" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2 text-gray-800 font-semibold outline-none focus:border-[#fb6624]">
-                  <option value="4">Bloco 4 estacas (2 × 2)</option>
+                  <option value="1">Bloco 1 estaca (centralizada)</option>
+                  <option value="2">Bloco 2 estacas (alinhadas em linha)</option>
+                  <option value="3">Bloco 3 estacas (arranjo triangular equilátero)</option>
+                  <option value="4">Bloco 4 estacas (2 × 2 quadrado)</option>
                   <option value="5">Bloco 5 estacas (4 cantos + 1 centro)</option>
-                  <option value="6">Bloco 6 estacas (2 × 3)</option>
+                  <option value="6">Bloco 6 estacas (2 × 3 retangular)</option>
                   <option value="8">Bloco 8 estacas (anel perimetral)</option>
                   <option value="9" selected>Bloco 9 estacas (3 × 3 retangular)</option>
                   <option value="12">Bloco 12 estacas (4 × 4 sem miolo)</option>
@@ -597,79 +600,208 @@
     </section>
 
     <!-- ========================================== -->
-    <!-- ABA 4: PARÂMETROS ESTRUTURAIS              -->
+    <!-- ABA 4: PARÂMETROS ESTRUTURAIS INTERATIVOS  -->
     <!-- ========================================== -->
     <section id="paneParamEstrut" class="tab-pane space-y-6">
-      <div class="clean-card rounded-xl p-5 space-y-4">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-gray-800 pb-2 border-b border-gray-100 flex items-center justify-between">
-          <span>Critérios de Materiais e Segurança Estrutural (NBR 6118:2023)</span>
-          <span class="text-orange-600 font-mono text-xs">Classe de Agressividade CAA II</span>
-        </h3>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
-          
-          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-2">
-            <span class="font-bold text-gray-800 block text-sm">Concreto do Fuste</span>
-            <div class="flex items-center justify-between">
-              <span class="text-gray-600">Resistência fck:</span>
-              <span class="font-mono font-bold text-gray-900">30 MPa</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-gray-600">Módulo Ecs (calc):</span>
-              <span class="font-mono font-bold text-gray-900" id="lblEcsVal">18.787 MPa</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-gray-600">Minorador &gamma;c:</span>
-              <span class="font-mono font-bold text-gray-900">1,40 (fuste moldado: 2,7)</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-gray-600">Sobreconsumo hélice:</span>
-              <span class="font-mono font-bold text-orange-600">25% a 30%</span>
-            </div>
-          </div>
-
-          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-2">
-            <span class="font-bold text-gray-800 block text-sm">Aço Estrutural CA-50</span>
-            <div class="flex items-center justify-between">
-              <span class="text-gray-600">Tensão fyk:</span>
-              <span class="font-mono font-bold text-gray-900">500 MPa</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-gray-600">Módulo Es:</span>
-              <span class="font-mono font-bold text-gray-900">210.000 MPa</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-gray-600">Minorador &gamma;s:</span>
-              <span class="font-mono font-bold text-gray-900">1,15</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-gray-600">Taxa mín. armadura:</span>
-              <span class="font-mono font-bold text-emerald-700">0,40% Ac</span>
-            </div>
-          </div>
-
-          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-2">
-            <span class="font-bold text-gray-800 block text-sm">Tensões Admissíveis</span>
-            <div class="flex items-center justify-between">
-              <span class="text-gray-600">&sigma; comp. dispensa arm.:</span>
-              <span class="font-mono font-bold text-gray-900">6,00 MPa</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-gray-600">&sigma; tração adm. fctk,inf:</span>
-              <span class="font-mono font-bold text-gray-900">0,54 MPa</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-gray-600">Cobrimento armadura:</span>
-              <span class="font-mono font-bold text-gray-900">3,0 cm (gaiola) / 5,0 cm</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-gray-600">Comprimento mín. gaiola:</span>
-              <span class="font-mono font-bold text-blue-700">4,00 m (mínimo normativo)</span>
-            </div>
-          </div>
-
+      
+      <!-- Cabeçalho e Seletor de Classe de Agressividade (CAA) -->
+      <div class="clean-card rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h3 class="font-bold text-sm sm:text-base text-gray-800 font-display">Critérios Estruturais e Materiais (NBR 6118:2023 · NBR 6122:2019)</h3>
+          <p class="text-xs text-gray-500">Configure as resistências, minoradores de cálculo e coeficientes com recálculo automático do módulo de elasticidade.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-gray-700 whitespace-nowrap">Classe de Agressividade:</span>
+          <select id="selCaa" onchange="onCaaChange()" class="bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-xs font-bold text-gray-800 outline-none focus:border-[#fb6624]">
+            <option value="CAA1">CAA I - Fraca (Rural / Submersa · cnom ≥ 3.0cm · fck ≥ 20 MPa)</option>
+            <option value="CAA2" selected>CAA II - Moderada (Urbana · cnom ≥ 4.0cm · fck ≥ 25 MPa)</option>
+            <option value="CAA3">CAA III - Forte (Marinha / Industrial · cnom ≥ 5.0cm · fck ≥ 30 MPa)</option>
+            <option value="CAA4">CAA IV - Muito Forte (Respingo de Maré · cnom ≥ 5.0cm · fck ≥ 40 MPa)</option>
+          </select>
         </div>
       </div>
+
+      <!-- 3 Cards de Entrada: Concreto, Aço e Tensões Admissíveis -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 text-xs">
+        
+        <!-- CARD 1: CONCRETO DO FUSTE -->
+        <div class="clean-card rounded-xl p-5 space-y-4">
+          <div class="flex items-center justify-between pb-2 border-b border-gray-100">
+            <span class="font-bold text-gray-800 text-sm flex items-center gap-1.5">
+              <i class="fa-solid fa-cube text-[#fb6624]"></i>
+              <span>Concreto do Fuste</span>
+            </span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-orange-50 text-[#fb6624] border border-orange-200">NBR 6118</span>
+          </div>
+
+          <div class="space-y-3">
+            <div>
+              <label class="text-gray-600 block mb-1 font-semibold">Resistência Característica (fck):</label>
+              <div class="flex items-center gap-2">
+                <select id="selFck" onchange="onFckPresetChange()" class="flex-1 bg-white border border-gray-300 rounded-lg p-2 font-mono font-bold text-gray-800">
+                  <option value="20">C20 (fck = 20 MPa)</option>
+                  <option value="25">C25 (fck = 25 MPa)</option>
+                  <option value="30" selected>C30 (fck = 30 MPa - Padrão DPT)</option>
+                  <option value="35">C35 (fck = 35 MPa)</option>
+                  <option value="40">C40 (fck = 40 MPa)</option>
+                  <option value="50">C50 (fck = 50 MPa)</option>
+                  <option value="custom">Outro (Personalizado)</option>
+                </select>
+                <div class="flex items-center gap-1 w-24">
+                  <input type="number" id="inpFck" value="30" min="15" max="90" step="1" oninput="recalcularParamEstrut()" class="w-full bg-white border border-gray-300 rounded-lg p-2 text-center font-mono font-bold text-[#fb6624]" />
+                  <span class="text-gray-500 font-mono text-[11px]">MPa</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-gray-600 block mb-1 font-semibold">Minorador Concreto (&gamma;c):</label>
+                <div class="flex items-center gap-1">
+                  <input type="number" id="inpGammaC" value="1.40" step="0.05" min="1.0" max="2.5" oninput="recalcularParamEstrut()" class="w-full bg-white border border-gray-300 rounded-lg p-2 font-mono text-center font-bold" />
+                </div>
+                <span class="text-[10px] text-gray-400">Norma: 1.40</span>
+              </div>
+              <div>
+                <label class="text-gray-600 block mb-1 font-semibold">Sobreconsumo Hélice:</label>
+                <div class="flex items-center gap-1">
+                  <input type="number" id="inpSobreconsumo" value="25" step="5" min="0" max="100" oninput="recalcularParamEstrut()" class="w-full bg-white border border-gray-300 rounded-lg p-2 font-mono text-center font-bold text-orange-600" />
+                  <span class="text-gray-500 font-mono">%</span>
+                </div>
+                <span class="text-[10px] text-gray-400">Padrão: 20% a 30%</span>
+              </div>
+            </div>
+
+            <!-- Demonstração Explícita da Fórmula do Módulo NBR 6118 -->
+            <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 space-y-1.5 font-mono text-[11px]">
+              <span class="font-sans font-bold text-gray-700 block text-[11px] uppercase tracking-wider">
+                Fórmula Explícita do Módulo (NBR 6118:2023):
+              </span>
+              <div class="text-gray-600">
+                E<sub>ci</sub> = &alpha;<sub>E</sub> &times; 5600 &times; &radic;f<sub>ck</sub> = <b id="valEciCalc" class="text-gray-900">30.672 MPa</b>
+              </div>
+              <div class="text-gray-600">
+                &alpha;<sub>i</sub> = 0.8 + 0.2 &times; (f<sub>ck</sub> / 80) = <b id="valAlphaICalc" class="text-gray-900">0.875</b>
+              </div>
+              <div class="text-[#fb6624] font-bold border-t border-gray-200 pt-1">
+                E<sub>cs</sub> = &alpha;<sub>i</sub> &times; E<sub>ci</sub> = <b id="valEcsCalc">26.838 MPa</b>
+              </div>
+              <p class="font-sans text-[10px] text-gray-500 leading-tight pt-1">
+                * Adotado &alpha;<sub>E</sub> = 1.0 (agregado granítico/gnáissico). Módulo secante utilizado na matriz de rigidez elástica do fuste.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2: AÇO ESTRUTURAL -->
+        <div class="clean-card rounded-xl p-5 space-y-4">
+          <div class="flex items-center justify-between pb-2 border-b border-gray-100">
+            <span class="font-bold text-gray-800 text-sm flex items-center gap-1.5">
+              <i class="fa-solid fa-bars text-blue-600"></i>
+              <span>Aço Estrutural (Armaduras)</span>
+            </span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">CA-50 / CA-60</span>
+          </div>
+
+          <div class="space-y-3">
+            <div>
+              <label class="text-gray-600 block mb-1 font-semibold">Tipo / Categoria do Aço:</label>
+              <select id="selTipoAco" onchange="onTipoAcoChange()" class="w-full bg-white border border-gray-300 rounded-lg p-2 font-mono font-bold text-gray-800">
+                <option value="ca50" selected>Aço CA-50 (fyk = 500 MPa · Padrão)</option>
+                <option value="ca60">Aço CA-60 (fyk = 600 MPa · Fios/Espirais)</option>
+                <option value="ca25">Aço CA-25 (fyk = 250 MPa)</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-gray-600 block mb-1 font-semibold">Tensão fyk:</label>
+                <div class="flex items-center gap-1">
+                  <input type="number" id="inpFyk" value="500" step="10" oninput="recalcularParamEstrut()" class="w-full bg-white border border-gray-300 rounded-lg p-2 font-mono font-bold text-blue-700" />
+                  <span class="text-gray-500 font-mono text-[11px]">MPa</span>
+                </div>
+              </div>
+              <div>
+                <label class="text-gray-600 block mb-1 font-semibold">Minorador Aço (&gamma;s):</label>
+                <input type="number" id="inpGammaS" value="1.15" step="0.05" oninput="recalcularParamEstrut()" class="w-full bg-white border border-gray-300 rounded-lg p-2 font-mono text-center font-bold" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-gray-600 block mb-1 font-semibold">Módulo Aço (Es):</label>
+                <div class="flex items-center gap-1">
+                  <input type="number" id="inpEsAco" value="210000" step="5000" oninput="recalcularParamEstrut()" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2 font-mono" />
+                  <span class="text-gray-500 font-mono text-[10px]">MPa</span>
+                </div>
+              </div>
+              <div>
+                <label class="text-gray-600 block mb-1 font-semibold">Taxa Mín. (&rho;mín):</label>
+                <div class="flex items-center gap-1">
+                  <input type="number" id="inpTaxaMinArm" value="0.40" step="0.05" oninput="recalcularParamEstrut()" class="w-full bg-white border border-gray-300 rounded-lg p-2 font-mono font-bold text-emerald-700 text-center" />
+                  <span class="text-gray-500 font-mono">%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 space-y-1 text-[11px] font-mono">
+              <div class="flex justify-between">
+                <span class="text-gray-600">Tensão de Cálculo fyd:</span>
+                <span class="font-bold text-gray-900" id="valFydCalc">434.78 MPa</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">Deformação de Escoamento &epsilon;yd:</span>
+                <span class="font-bold text-gray-900" id="valEpsYdCalc">2.07 &permil;</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- CARD 3: TENSÕES ADMISSÍVEIS E COBRIMENTO -->
+        <div class="clean-card rounded-xl p-5 space-y-4">
+          <div class="flex items-center justify-between pb-2 border-b border-gray-100">
+            <span class="font-bold text-gray-800 text-sm flex items-center gap-1.5">
+              <i class="fa-solid fa-shield-halved text-emerald-600"></i>
+              <span>Cobrimento & Limites Normativos</span>
+            </span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">NBR 6122</span>
+          </div>
+
+          <div class="space-y-3">
+            <div>
+              <label class="text-gray-600 block mb-1 font-semibold">Cobrimento Nominal da Armadura (cnom):</label>
+              <div class="flex items-center gap-2">
+                <input type="number" id="inpCobrimentoArm" value="4.0" step="0.5" min="2.0" max="8.0" oninput="recalcularParamEstrut()" class="w-full bg-white border border-gray-300 rounded-lg p-2 font-mono font-bold text-gray-800" />
+                <span class="text-gray-500 font-mono">cm</span>
+              </div>
+              <span class="text-[10px] text-gray-400">Sugestão vinculada à Classe de Agressividade (CAA). Editável livremente.</span>
+            </div>
+
+            <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 space-y-2 text-[11px]">
+              <span class="font-sans font-bold text-gray-700 block text-[11px] uppercase tracking-wider">Tensões Limites Admissíveis:</span>
+              <div class="flex justify-between font-mono">
+                <span class="text-gray-600">&sigma; comp. dispensa armação:</span>
+                <span class="font-bold text-gray-900" id="valSigmaCompDisp">6.00 MPa (60 kgf/cm²)</span>
+              </div>
+              <div class="flex justify-between font-mono">
+                <span class="text-gray-600">&sigma; tração adm. fctk,inf:</span>
+                <span class="font-bold text-gray-900" id="valSigmaTracAdm">0.54 MPa</span>
+              </div>
+              <div class="flex justify-between font-mono border-t pt-1 border-gray-200">
+                <span class="text-gray-600">Comprimento Mín. da Gaiola:</span>
+                <span class="font-bold text-blue-700">4,00 m (ou 1/3 do fuste)</span>
+              </div>
+            </div>
+
+            <p class="text-[10px] text-gray-500 leading-normal">
+              * Conforme item 8.2.1 da ABNT NBR 6122:2019, estacas escavadas e hélice contínua exigem cobrimento nominal mínimo de <b>30 mm</b> para fuste revestido e <b>40 mm a 50 mm</b> para fuste moldado in loco diretamente contra o solo.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
     </section>
 
     <!-- ========================================== -->
@@ -789,21 +921,30 @@
         <div class="lg:col-span-6 clean-card rounded-xl p-5 flex flex-col items-center justify-between">
           <div class="w-full flex items-center justify-between pb-2 border-b border-gray-100 mb-2">
             <span class="text-xs font-bold uppercase tracking-wider text-gray-700">Mapa de Cargas por Estaca no Bloco</span>
-            <span class="text-[10px] px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-bold border border-blue-200">Azul = Conforme</span>
+            <span id="badgeStatusMapa" class="text-[10px] px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">100% Conforme</span>
           </div>
 
           <div class="w-full bg-[#fafafa] border border-gray-200 rounded-lg p-3 flex items-center justify-center">
-            <svg id="svgReacoesBloco" width="100%" height="280" viewBox="0 0 400 320"></svg>
+            <svg id="svgReacoesBloco" width="100%" height="280" viewBox="0 0 420 320"></svg>
           </div>
 
-          <div class="w-full grid grid-cols-2 gap-3 text-xs font-mono pt-3 border-t border-gray-100 mt-2">
+          <!-- Legenda Cromática Estak PRO -->
+          <div class="w-full flex flex-wrap items-center justify-center gap-2.5 text-[10px] font-bold py-2 border-t border-b border-gray-100 my-2">
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> &lt; 70% Segura</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-sky-500 inline-block"></span> 70 - 85% Conforme</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> 85 - 100% Crítica</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-red-600 inline-block"></span> &gt; 100% Sobrecarga</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-purple-600 inline-block"></span> Tração</span>
+          </div>
+
+          <div class="w-full grid grid-cols-2 gap-3 text-xs font-mono pt-1 border-t border-gray-100 mt-1">
             <div>
               <span class="text-gray-500 block text-[10px] uppercase font-sans font-bold">Carga Máxima:</span>
-              <span class="text-gray-900 font-bold" id="lblCargaMaxEstaca">N(E9) = 19.64 tf &le; 23.12 tf (OK)</span>
+              <span class="text-gray-900 font-bold" id="lblCargaMaxEstaca">--</span>
             </div>
             <div>
               <span class="text-gray-500 block text-[10px] uppercase font-sans font-bold">Carga Mínima:</span>
-              <span class="text-gray-900 font-bold" id="lblCargaMinEstaca">N(E1) = 10.11 tf &gt; 0 (Comprimida)</span>
+              <span class="text-gray-900 font-bold" id="lblCargaMinEstaca">--</span>
             </div>
           </div>
         </div>
@@ -1320,7 +1461,24 @@
     function getPileLayout(n, s) {
       const coords = [];
       const half = s / 2;
-      if (n === 4) {
+      if (n === 1) {
+        coords.push({ id: 'E1', x: 0, y: 0 });
+      } else if (n === 2) {
+        coords.push(
+          { id: 'E1', x: -half, y: 0 },
+          { id: 'E2', x: half, y: 0 }
+        );
+      } else if (n === 3) {
+        // Triângulo equilátero com centróide em (0,0)
+        const hTri = (s * Math.sqrt(3)) / 2;
+        const yTop = (2 / 3) * hTri;
+        const yBot = -(1 / 3) * hTri;
+        coords.push(
+          { id: 'E1', x: 0, y: yTop },
+          { id: 'E2', x: -half, y: yBot },
+          { id: 'E3', x: half, y: yBot }
+        );
+      } else if (n === 4) {
         coords.push({ id: 'E1', x: -half, y: half }, { id: 'E2', x: half, y: half },
                     { id: 'E3', x: -half, y: -half }, { id: 'E4', x: half, y: -half });
       } else if (n === 5) {
@@ -1358,6 +1516,160 @@
         }
       }
       return coords;
+    }
+
+    function onNumEstacasChange() {
+      const n = parseInt(document.getElementById('selNumEstacas').value) || 9;
+      const inpHb = document.getElementById('inpHbBloco');
+      if (inpHb) {
+        if (n === 1) inpHb.value = "80";
+        else if (n === 2) inpHb.value = "90";
+        else if (n === 3) inpHb.value = "100";
+        else if (n <= 6) inpHb.value = "100";
+        else inpHb.value = "105";
+      }
+      recalcularTudo();
+    }
+
+    // Variáveis Globais de Capacidade Admissível
+    let padmAdotGlobal = 23.12;
+    let padmtAdotGlobal = -13.02;
+    let lastCalculatedCoords = [];
+
+    // Classificação Cromática Estak PRO (<70% Segura, 70-85% Conforme, 85-100% Crítica, >100% Sobrecarga, Tração)
+    function getStatusEstaca(niTotal, padm, padmt) {
+      if (niTotal < 0) {
+        const isTracOk = Math.abs(niTotal) <= Math.abs(padmt || -10);
+        const taxaTrac = Math.abs(niTotal) / Math.abs(padmt || 1);
+        return {
+          status: 'Tração',
+          color: '#8b5cf6',
+          badgeClass: isTracOk ? 'bg-purple-100 text-purple-800 border-purple-200' : 'bg-red-100 text-red-800 border-red-200',
+          taxa: taxaTrac,
+          isOk: isTracOk
+        };
+      }
+      const taxa = niTotal / (padm > 0 ? padm : 1);
+      if (taxa > 1.0) {
+        return {
+          status: 'Sobrecarga',
+          color: '#dc2626',
+          badgeClass: 'bg-red-100 text-red-800 border-red-200',
+          taxa: taxa,
+          isOk: false
+        };
+      } else if (taxa >= 0.85) {
+        return {
+          status: 'Crítica',
+          color: '#f97316',
+          badgeClass: 'bg-amber-100 text-amber-800 border-amber-200',
+          taxa: taxa,
+          isOk: true
+        };
+      } else if (taxa >= 0.70) {
+        return {
+          status: 'Conforme',
+          color: '#0284c7',
+          badgeClass: 'bg-sky-100 text-sky-800 border-sky-200',
+          taxa: taxa,
+          isOk: true
+        };
+      } else {
+        return {
+          status: 'Segura',
+          color: '#10b981',
+          badgeClass: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+          taxa: taxa,
+          isOk: true
+        };
+      }
+    }
+
+    // Funções de Controle dos Parâmetros Estruturais (Aba 4)
+    function onCaaChange() {
+      const caa = document.getElementById('selCaa').value;
+      const inpFck = document.getElementById('inpFck');
+      const selFck = document.getElementById('selFck');
+      const inpCobr = document.getElementById('inpCobrimentoArm');
+
+      if (caa === 'CAA1') {
+        if (inpCobr) inpCobr.value = "3.0";
+        if (inpFck && parseFloat(inpFck.value) < 20) { inpFck.value = "20"; if (selFck) selFck.value = "20"; }
+      } else if (caa === 'CAA2') {
+        if (inpCobr) inpCobr.value = "4.0";
+        if (inpFck && parseFloat(inpFck.value) < 25) { inpFck.value = "25"; if (selFck) selFck.value = "25"; }
+      } else if (caa === 'CAA3') {
+        if (inpCobr) inpCobr.value = "5.0";
+        if (inpFck && parseFloat(inpFck.value) < 30) { inpFck.value = "30"; if (selFck) selFck.value = "30"; }
+      } else if (caa === 'CAA4') {
+        if (inpCobr) inpCobr.value = "5.0";
+        if (inpFck && parseFloat(inpFck.value) < 40) { inpFck.value = "40"; if (selFck) selFck.value = "40"; }
+      }
+      recalcularParamEstrut();
+    }
+
+    function onFckPresetChange() {
+      const sel = document.getElementById('selFck');
+      const inp = document.getElementById('inpFck');
+      if (sel && inp) {
+        if (sel.value !== 'custom') {
+          inp.value = sel.value;
+        }
+      }
+      recalcularParamEstrut();
+    }
+
+    function onTipoAcoChange() {
+      const sel = document.getElementById('selTipoAco');
+      const inp = document.getElementById('inpFyk');
+      if (sel && inp) {
+        if (sel.value === 'ca50') inp.value = "500";
+        else if (sel.value === 'ca60') inp.value = "600";
+        else if (sel.value === 'ca25') inp.value = "250";
+      }
+      recalcularParamEstrut();
+    }
+
+    function recalcularParamEstrut() {
+      const fck = parseFloat(document.getElementById('inpFck').value) || 30;
+      const gammaC = parseFloat(document.getElementById('inpGammaC').value) || 1.40;
+      const fyk = parseFloat(document.getElementById('inpFyk').value) || 500;
+      const gammaS = parseFloat(document.getElementById('inpGammaS').value) || 1.15;
+      const es = parseFloat(document.getElementById('inpEsAco').value) || 210000;
+
+      // 1. Módulo NBR 6118:2023
+      const alphaE = 1.0; // granito/gnaisse
+      const eci = alphaE * 5600 * Math.sqrt(fck);
+      const alphaI = Math.min(1.0, 0.8 + 0.2 * (fck / 80.0));
+      const ecs = alphaI * eci;
+
+      const elEci = document.getElementById('valEciCalc');
+      if (elEci) elEci.innerText = Math.round(eci).toLocaleString('pt-BR') + ' MPa';
+      const elAlphaI = document.getElementById('valAlphaICalc');
+      if (elAlphaI) elAlphaI.innerText = alphaI.toFixed(3);
+      const elEcs = document.getElementById('valEcsCalc');
+      if (elEcs) elEcs.innerText = Math.round(ecs).toLocaleString('pt-BR') + ' MPa';
+      const lblEcs = document.getElementById('lblEcsVal');
+      if (lblEcs) lblEcs.innerText = Math.round(ecs).toLocaleString('pt-BR') + ' MPa';
+
+      // 2. Aço
+      const fyd = fyk / gammaS;
+      const epsYd = (fyd / es) * 1000.0;
+      const elFyd = document.getElementById('valFydCalc');
+      if (elFyd) elFyd.innerText = fyd.toFixed(2) + ' MPa';
+      const elEps = document.getElementById('valEpsYdCalc');
+      if (elEps) elEps.innerText = epsYd.toFixed(2) + ' ‰';
+
+      // 3. Tensões Admissíveis
+      const sigmaCompDisp = 0.30 * fck;
+      const fctm = 0.3 * Math.pow(fck, 2/3);
+      const fctkInf = 0.7 * fctm;
+      const elComp = document.getElementById('valSigmaCompDisp');
+      if (elComp) elComp.innerText = `${sigmaCompDisp.toFixed(2)} MPa (${(sigmaCompDisp*10).toFixed(0)} kgf/cm²)`;
+      const elTrac = document.getElementById('valSigmaTracAdm');
+      if (elTrac) elTrac.innerText = `${fctkInf.toFixed(2)} MPa (${(fctkInf*10).toFixed(1)} kgf/cm²)`;
+
+      recalcularTudo();
     }
 
     // ==========================================
@@ -1487,6 +1799,9 @@
       else if (metodoGeotAtivo === 'aoki') { padmAdot = padmAoki; padmtAdot = padmtAoki; }
       else if (metodoGeotAtivo === 'antunes') { padmAdot = padmAntunes; padmtAdot = padmtAntunes; }
 
+      padmAdotGlobal = padmAdot;
+      padmtAdotGlobal = padmtAdot;
+
       document.getElementById('resPadmBanner').innerText = padmAdot.toFixed(2) + ' tf';
       document.getElementById('repPadmAdot').innerText = padmAdot.toFixed(2) + ' tf / estaca';
 
@@ -1547,7 +1862,8 @@
         if (p.niTotal > maxReacao) { maxReacao = p.niTotal; estacaMaxId = p.id; }
         if (p.niTotal < minReacao) { minReacao = p.niTotal; estacaMinId = p.id; }
 
-        const isOk = (p.niTotal <= padmAdot) && (p.niTotal >= padmtAdot);
+        const st = getStatusEstaca(p.niTotal, padmAdot, padmtAdot);
+        p.statusInfo = st;
 
         const tr = document.createElement('tr');
         tr.className = "hover:bg-gray-50";
@@ -1556,14 +1872,30 @@
           <td class="p-2">${p.x.toFixed(1)}</td>
           <td class="p-2">${p.y.toFixed(1)}</td>
           <td class="p-2 font-bold text-blue-700">${ni.toFixed(2)}</td>
-          <td class="p-2 font-bold ${isOk ? 'text-gray-900' : 'text-red-600'}">${p.niTotal.toFixed(2)}</td>
-          <td class="p-2 font-sans font-bold ${isOk ? 'text-emerald-700' : 'text-red-600'}">${isOk ? 'OK' : 'Crítico'}</td>
+          <td class="p-2 font-bold text-gray-900">${p.niTotal.toFixed(2)}</td>
+          <td class="p-2 font-sans"><span class="px-2 py-0.5 rounded text-[10px] font-bold border ${st.badgeClass}">${st.status} (${(st.taxa * 100).toFixed(0)}%)</span></td>
         `;
         tbodyReacoes.appendChild(tr);
       });
 
-      document.getElementById('lblCargaMaxEstaca').innerText = `${estacaMaxId} = ${maxReacao.toFixed(2)} tf ≤ ${padmAdot.toFixed(2)} tf (OK)`;
-      document.getElementById('lblCargaMinEstaca').innerText = `${estacaMinId} = ${minReacao.toFixed(2)} tf > 0 (Comprimida)`;
+      lastCalculatedCoords = coords;
+
+      const maxSt = getStatusEstaca(maxReacao, padmAdot, padmtAdot);
+      const minSt = getStatusEstaca(minReacao, padmAdot, padmtAdot);
+      document.getElementById('lblCargaMaxEstaca').innerHTML = `<span class="${maxReacao <= padmAdot ? 'text-gray-900' : 'text-red-600'} font-bold">${estacaMaxId} = ${maxReacao.toFixed(2)} tf ≤ ${padmAdot.toFixed(2)} tf (${(maxSt.taxa * 100).toFixed(0)}%)</span>`;
+      document.getElementById('lblCargaMinEstaca').innerHTML = `<span class="${minReacao >= 0 ? 'text-gray-900' : 'text-purple-700'} font-bold">${estacaMinId} = ${minReacao.toFixed(2)} tf ${minReacao >= 0 ? '> 0 (Comprimida)' : 'Tracionada'}</span>`;
+
+      // Atualizar seletor de estaca no painel de diagramas (Aba 6)
+      const selDiag = document.getElementById('selEstacaDiagrama');
+      if (selDiag) {
+        const curVal = selDiag.value;
+        selDiag.innerHTML = coords.map(p => {
+          let extra = '';
+          if (p.id === estacaMaxId) extra = ' (Mais Solicitada)';
+          else if (p.id === estacaMinId) extra = ' (Menos Solicitada)';
+          return `<option value="${p.id}" ${p.id === (curVal || estacaMaxId) ? 'selected' : ''}>${p.id} · N+PP = ${p.niTotal.toFixed(2)} tf${extra}</option>`;
+        }).join('');
+      }
 
       // 6. Atualizar Desenhos
       renderLancamento();
@@ -1734,19 +2066,45 @@
       const diamCm = parseFloat(document.getElementById('diametroEstaca').value) || 40;
       const cobrLateralCm = parseFloat(document.getElementById('cobrimentoLateral').value) || 20;
 
-      const coords = getPileLayout(nEstacas, sCm);
+      const coords = (lastCalculatedCoords && lastCalculatedCoords.length === nEstacas) ? lastCalculatedCoords : getPileLayout(nEstacas, sCm);
       let maxX = 0, maxY = 0;
+      let maxN = -999;
+      let estacaMaxId = 'E1';
+      let hasSobrecarga = false;
+      let hasCritica = false;
+
       coords.forEach(p => {
         if (Math.abs(p.x) > maxX) maxX = Math.abs(p.x);
         if (Math.abs(p.y) > maxY) maxY = Math.abs(p.y);
+        const val = p.niTotal !== undefined ? p.niTotal : 14.88;
+        if (val > maxN) { maxN = val; estacaMaxId = p.id; }
+        const st = p.statusInfo || getStatusEstaca(val, padmAdotGlobal, padmtAdotGlobal);
+        if (st.status === 'Sobrecarga') hasSobrecarga = true;
+        if (st.status === 'Crítica') hasCritica = true;
       });
+
+      const badgeMapa = document.getElementById('badgeStatusMapa');
+      if (badgeMapa) {
+        if (hasSobrecarga) {
+          badgeMapa.className = "text-[10px] px-2 py-0.5 rounded bg-red-100 text-red-800 font-bold border border-red-200";
+          badgeMapa.innerText = "Sobrecarga Detectada";
+        } else if (hasCritica) {
+          badgeMapa.className = "text-[10px] px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold border border-amber-200";
+          badgeMapa.innerText = "Atenção: Carga Crítica";
+        } else {
+          badgeMapa.className = "text-[10px] px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold border border-emerald-200";
+          badgeMapa.innerText = "100% Conforme";
+        }
+      }
+
       const blocoW = (2 * maxX) + (2 * cobrLateralCm) + diamCm;
       const blocoH = (2 * maxY) + (2 * cobrLateralCm) + diamCm;
 
-      const W = 400, H = 320, cx = W / 2, cy = H / 2;
+      const W = 420, H = 320, cx = W / 2, cy = H / 2;
       const scale = 190 / Math.max(blocoW, blocoH, 300);
       const bW_px = blocoW * scale;
       const bH_px = blocoH * scale;
+      const rEst_px = Math.max((diamCm / 2) * scale, 12);
 
       let out = `
         <rect width="${W}" height="${H}" fill="#ffffff" />
@@ -1756,10 +2114,21 @@
       coords.forEach(p => {
         const px = cx + (p.x * scale);
         const py = cy - (p.y * scale);
-        const val = p.niTotal || 14.88;
+        const val = p.niTotal !== undefined ? p.niTotal : 14.88;
+        const st = p.statusInfo || getStatusEstaca(val, padmAdotGlobal, padmtAdotGlobal);
+        const isMax = (p.id === estacaMaxId);
+
+        // Se for a estaca máxima mais solicitada, anel tracejado de destaque
+        if (isMax) {
+          out += `<circle cx="${px}" cy="${py}" r="${rEst_px + 6}" fill="none" stroke="${st.color}" stroke-width="2" stroke-dasharray="3,2" />`;
+        }
+
+        // Círculo com cor de preenchimento dinâmica do status
         out += `
-          <circle cx="${px}" cy="${py}" r="11" fill="#2563eb" stroke="#1e40af" stroke-width="2" />
-          <text x="${px}" y="${py + 18}" font-family="monospace" font-size="9.5" font-weight="bold" fill="#1e40af" text-anchor="middle">N(${p.id}) = ${val.toFixed(2)}tf</text>
+          <circle cx="${px}" cy="${py}" r="${rEst_px}" fill="${st.color}" stroke="#1e293b" stroke-width="1.5" />
+          <text x="${px}" y="${py + 3.5}" font-family="monospace" font-size="9" font-weight="bold" fill="#ffffff" text-anchor="middle">${p.id}</text>
+          <text x="${px}" y="${py + rEst_px + 12}" font-family="monospace" font-size="8.5" font-weight="bold" fill="#0f172a" text-anchor="middle">N = ${val.toFixed(2)} tf</text>
+          <text x="${px}" y="${py + rEst_px + 21}" font-family="monospace" font-size="8" font-weight="bold" fill="${st.color}" text-anchor="middle">(${(st.taxa * 100).toFixed(0)}%)</text>
         `;
       });
 
@@ -1769,11 +2138,29 @@
     // Diagramas Estruturais ao Longo da Estaca (Padrão Tela 6 Estak PRO)
     function drawDiagramasEstaca() {
       const L = parseFloat(document.getElementById('comprimentoEstaca').value) || 9.0;
+      const Fx = parseFloat(document.getElementById('esforcoFx').value) || 2.10;
+      const nEstacas = parseInt(document.getElementById('selNumEstacas').value) || 9;
       const svgN = document.getElementById('svgDiagNormal');
       const svgV = document.getElementById('svgDiagCortante');
       const svgM = document.getElementById('svgDiagMomento');
       const svgD = document.getElementById('svgDiagDeslocamento');
       if (!svgN) return;
+
+      // Obter dados da estaca selecionada
+      const selDiag = document.getElementById('selEstacaDiagrama');
+      const estacaId = selDiag ? selDiag.value : 'E1';
+      let pEstaca = (lastCalculatedCoords || []).find(p => p.id === estacaId);
+      if (!pEstaca && lastCalculatedCoords && lastCalculatedCoords.length > 0) pEstaca = lastCalculatedCoords[0];
+      
+      const nTopo = pEstaca && pEstaca.niTotal ? pEstaca.niTotal : 19.64;
+      const nPonta = Math.max(nTopo * 0.20, 1.2);
+      const n25 = nTopo - (nTopo - nPonta) * 0.35;
+      const n50 = nTopo - (nTopo - nPonta) * 0.65;
+      const n75 = nTopo - (nTopo - nPonta) * 0.85;
+
+      const vTopo = (Fx / nEstacas) * 1.0;
+      const mMax = vTopo * (L * 0.18);
+      const dTopo = Math.min(Math.max((vTopo * 4.5), 0.5), 8.0);
 
       const W = 200, H = 340;
       const topY = 30, botY = 310;
@@ -1784,14 +2171,16 @@
         <line x1="${zeroX}" y1="${topY}" x2="${zeroX}" y2="${botY}" stroke="#1e293b" stroke-width="2" />
         <polygon points="${zeroX},${topY} 160,${topY} 130,${topY + 60} 90,${topY + 140} 50,${topY + 220} ${zeroX},${botY}" fill="#fed7aa" stroke="#ea580c" stroke-width="1.5" />
         <line x1="${zeroX}" y1="${topY}" x2="160" y2="${topY}" stroke="#ea580c" stroke-width="1.5" />
-        <text x="165" y="${topY + 4}" font-family="monospace" font-size="10" font-weight="bold" fill="#c2410c">19.64 tf</text>
-        <text x="135" y="${topY + 64}" font-family="monospace" font-size="9" fill="#c2410c">15.55 tf</text>
-        <text x="95" y="${topY + 144}" font-family="monospace" font-size="9" fill="#c2410c">8.98 tf</text>
-        <text x="${zeroX + 5}" y="${botY - 5}" font-family="monospace" font-size="9" fill="#c2410c">4.17 tf</text>
-        <text x="${zeroX - 30}" y="${topY + 4}" font-family="monospace" font-size="10" fill="#64748b">1.05m</text>
+        <text x="165" y="${topY + 4}" font-family="monospace" font-size="10" font-weight="bold" fill="#c2410c">${nTopo.toFixed(2)} tf</text>
+        <text x="135" y="${topY + 64}" font-family="monospace" font-size="9" fill="#c2410c">${n25.toFixed(2)} tf</text>
+        <text x="95" y="${topY + 144}" font-family="monospace" font-size="9" fill="#c2410c">${n50.toFixed(2)} tf</text>
+        <text x="${zeroX + 5}" y="${botY - 5}" font-family="monospace" font-size="9" fill="#c2410c">${nPonta.toFixed(2)} tf</text>
+        <text x="${zeroX - 30}" y="${topY + 4}" font-family="monospace" font-size="10" fill="#64748b">0.0m</text>
         <text x="${zeroX - 30}" y="${botY + 4}" font-family="monospace" font-size="10" fill="#64748b">${L.toFixed(1)}m</text>
       `;
       svgN.innerHTML = outN;
+      const lblNorm = document.getElementById('lblDiagNormalTopo');
+      if (lblNorm) lblNorm.innerText = `Topo: ${nTopo.toFixed(2)} tf → Ponta: ${nPonta.toFixed(2)} tf`;
 
       // 2. Cortante (área verde)
       const midX = 100;
@@ -1799,31 +2188,37 @@
         <line x1="${midX}" y1="${topY}" x2="${midX}" y2="${botY}" stroke="#1e293b" stroke-width="2" />
         <rect x="${midX - 35}" y="${topY}" width="35" height="50" fill="#a7f3d0" stroke="#059669" stroke-width="1.5" />
         <rect x="${midX}" y="${topY + 50}" width="15" height="60" fill="#a7f3d0" stroke="#059669" stroke-width="1.5" />
-        <text x="${midX - 38}" y="${topY - 4}" font-family="monospace" font-size="10" font-weight="bold" fill="#047857">0.23 tf</text>
-        <text x="${midX + 20}" y="${topY + 80}" font-family="monospace" font-size="9" fill="#047857">-0.05 tf</text>
+        <text x="${midX - 38}" y="${topY - 4}" font-family="monospace" font-size="10" font-weight="bold" fill="#047857">${vTopo.toFixed(2)} tf</text>
+        <text x="${midX + 20}" y="${topY + 80}" font-family="monospace" font-size="9" fill="#047857">-${(vTopo*0.25).toFixed(2)} tf</text>
       `;
       svgV.innerHTML = outV;
+      const lblCort = document.getElementById('lblDiagCortanteTopo');
+      if (lblCort) lblCort.innerText = `V_máx = ${vTopo.toFixed(2)} tf`;
 
       // 3. Momento (área amarela)
       const zeroM = 160;
       let outM = `
         <line x1="${zeroM}" y1="${topY}" x2="${zeroM}" y2="${botY}" stroke="#1e293b" stroke-width="2" />
         <polygon points="${zeroM},${topY} 60,${topY + 70} 70,${topY + 120} 95,${topY + 180} ${zeroM},${botY}" fill="#fef08a" stroke="#ca8a04" stroke-width="1.5" />
-        <text x="50" y="${topY + 74}" font-family="monospace" font-size="10" font-weight="bold" fill="#a16207">-0.32 tfm</text>
+        <text x="50" y="${topY + 74}" font-family="monospace" font-size="10" font-weight="bold" fill="#a16207">-${mMax.toFixed(2)} tfm</text>
         <text x="${zeroM + 5}" y="${topY + 4}" font-family="monospace" font-size="9" fill="#64748b">0.00</text>
       `;
       svgM.innerHTML = outM;
+      const lblMom = document.getElementById('lblDiagMomentoMax');
+      if (lblMom) lblMom.innerText = `M_máx = -${mMax.toFixed(2)} tf·m`;
 
       // 4. Deslocamento (curva vermelha)
       const zeroD = 60;
       let outD = `
         <line x1="${zeroD}" y1="${topY}" x2="${zeroD}" y2="${botY}" stroke="#1e293b" stroke-width="2" />
         <path d="M 140 ${topY} Q 95 ${topY + 100} 58 ${topY + 180} T 60 ${botY}" fill="none" stroke="#dc2626" stroke-width="2.5" />
-        <text x="145" y="${topY + 4}" font-family="monospace" font-size="10" font-weight="bold" fill="#dc2626">2.04 mm</text>
-        <text x="100" y="${topY + 70}" font-family="monospace" font-size="9" fill="#dc2626">0.87 mm</text>
-        <text x="65" y="${topY + 130}" font-family="monospace" font-size="9" fill="#dc2626">0.14 mm</text>
+        <text x="145" y="${topY + 4}" font-family="monospace" font-size="10" font-weight="bold" fill="#dc2626">${dTopo.toFixed(2)} mm</text>
+        <text x="100" y="${topY + 70}" font-family="monospace" font-size="9" fill="#dc2626">${(dTopo*0.42).toFixed(2)} mm</text>
+        <text x="65" y="${topY + 130}" font-family="monospace" font-size="9" fill="#dc2626">${(dTopo*0.07).toFixed(2)} mm</text>
       `;
       svgD.innerHTML = outD;
+      const lblDesloc = document.getElementById('lblDiagDeslocTopo');
+      if (lblDesloc) lblDesloc.innerText = `δtopo = ${dTopo.toFixed(2)} mm`;
     }
 
     // Desenho da Seção Circular Transversal da Estaca
