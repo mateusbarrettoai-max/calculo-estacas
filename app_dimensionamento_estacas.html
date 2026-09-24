@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Moura Barretto Engenharia | Dimensionamento Geotécnico e Estrutural de Estacas (Estak PRO Core)</title>
+  <title>Moura Barretto Engenharia | Dimensionamento Geotécnico e Estrutural de Estacas</title>
   
   <!-- Favicon & PWA Icons -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23282828'/><path d='M30 20 L70 20 L60 85 L50 95 L40 85 Z' fill='%23fb6624'/></svg>" />
@@ -58,7 +58,7 @@
       border: 1px solid #e5e7eb;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 6px 16px -4px rgba(0, 0, 0, 0.02);
     }
-    /* Estilo das Abas de Navegação Tipo Estak PRO */
+    /* Estilo das Abas de Navegação */
     .nav-tab-btn {
       padding: 10px 14px;
       font-size: 13px;
@@ -117,8 +117,14 @@
               <span class="font-bold text-lg sm:text-xl text-[#282828] tracking-tight font-display">Moura Barretto</span>
               <span class="text-[11px] px-2 py-0.5 rounded font-semibold bg-gray-100 text-gray-700 border border-gray-300 font-mono">ENGENHARIA</span>
             </div>
-            <p class="text-xs text-gray-500 font-medium">Dimensionamento Geotécnico & Estrutural de Estacas · Módulo Avançado Estak PRO</p>
+            <p class="text-xs text-gray-500 font-medium">Dimensionamento Geotécnico & Estrutural de Estacas · Moura Barretto Engenharia</p>
           </div>
+        </div>
+
+        <!-- Center: Obra Input (Multi-projetos) -->
+        <div class="hidden md:flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 text-xs font-mono">
+          <span class="text-gray-500 font-bold uppercase text-[10px]">Obra:</span>
+          <input type="text" id="inpNomeObra" value="Projeto Executivo de Fundações" oninput="atualizarNomeObra()" class="bg-transparent border-b border-gray-300 font-bold text-gray-800 text-xs px-1 outline-none focus:border-[#fb6624] w-56" title="Clique para editar o nome da obra" />
         </div>
 
         <!-- Right: Actions -->
@@ -147,14 +153,14 @@
         <p class="text-xs text-gray-500">Critérios: NBR 6122:2019 · NBR 6118:2023 · Métodos Aoki-Velloso, Décourt-Quaresma, Teixeira e Antunes-Cabral</p>
       </div>
       <div class="text-right text-xs text-gray-600 font-mono">
-        <p>Obra: <b>Nova Sede DPT Salvador / BA</b></p>
+        <p>Obra: <b id="printNomeObra">Projeto Executivo de Fundações</b></p>
         <p>Responsável: <b>Eng. Mateus Moura Barretto - CREA-BA 051805952-9</b></p>
         <p>Data: <span id="printDataEmissao"></span></p>
       </div>
     </div>
   </div>
 
-  <!-- NAVEGAÇÃO POR ABAS NO ESTILO ESTAK PRO -->
+  <!-- NAVEGAÇÃO POR ABAS -->
   <div class="bg-white border-b border-gray-200 sticky top-16 sm:top-20 z-40 no-print">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center overflow-x-auto gap-1 py-1">
@@ -213,9 +219,9 @@
         </div>
         <div class="flex flex-wrap items-center gap-2">
           <select id="presetSondagem" onchange="loadPreset()" class="bg-gray-50 border border-gray-300 text-xs text-gray-800 rounded-lg px-3 py-2 outline-none focus:border-[#fb6624] font-medium">
-            <option value="dpt-sp01" selected>Furo SP-01 (DPT Salvador · Ref. Estak PRO 32m)</option>
-            <option value="dpt-sp06">Furo SP-06 (DPT Salvador · Ref. Reservatório 160m³)</option>
-            <option value="dpt-sp02">Furo SP-02 (DPT Salvador)</option>
+            <option value="dpt-sp01" selected>Furo SP-01 (Perfil Geotécnico Completo 32m)</option>
+            <option value="dpt-sp06">Furo SP-06 (Sondagem SPT 20m)</option>
+            <option value="dpt-sp02">Furo SP-02 (Sondagem SPT 15m)</option>
             <option value="personalizado">Perfil Personalizado (Em Branco / Livre)</option>
           </select>
           <button onclick="recalcularTudo()" class="px-4 py-2 rounded-lg bg-[#fb6624] hover:bg-[#e05417] text-white font-semibold text-xs transition-all shadow-sm flex items-center gap-1.5">
@@ -261,14 +267,14 @@
           </div>
         </div>
 
-        <!-- Coluna Direita: Gráfico Visual NSPT x Profundidade (Padrão Estak PRO) (7 colunas) -->
+        <!-- Coluna Direita: Gráfico Visual NSPT x Profundidade (7 colunas) -->
         <div class="lg:col-span-7 clean-card rounded-xl p-5 flex flex-col">
           <div class="flex items-center justify-between pb-3 border-b border-gray-100 mb-3">
             <div class="flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-red-600"></span>
               <span class="font-bold text-xs sm:text-sm text-gray-800">Gráfico do Perfil N_SPT vs Profundidade (m)</span>
             </div>
-            <span class="text-[11px] font-mono text-gray-500">Ref. Estak PRO Furo SP-01</span>
+            <span class="text-[11px] font-mono text-gray-500" id="lblRefSondagemBadge">Perfil Sondagem SP-01</span>
           </div>
           <div class="flex-1 min-h-[460px] relative bg-white rounded-lg p-2">
             <canvas id="graficoSptProfile"></canvas>
@@ -291,7 +297,7 @@
           <div class="clean-card rounded-xl p-5 space-y-4">
             <h3 class="text-xs font-bold uppercase tracking-wider text-gray-700 pb-2 border-b border-gray-100 flex items-center justify-between">
               <span>Geometria do Bloco e Estacas</span>
-              <span class="text-orange-600 font-mono text-[11px]">Estak PRO</span>
+              <span class="text-orange-600 font-mono text-[11px]">NBR 6118 / 6122</span>
             </h3>
 
             <div class="space-y-3 text-xs">
@@ -307,7 +313,7 @@
                   <option value="8">Bloco 8 estacas (anel perimetral)</option>
                   <option value="9" selected>Bloco 9 estacas (3 × 3 retangular)</option>
                   <option value="12">Bloco 12 estacas (4 × 4 sem miolo)</option>
-                  <option value="16">Bloco 16 estacas (4 × 4 completo - DPT)</option>
+                  <option value="16">Bloco 16 estacas (4 × 4 retangular completo)</option>
                 </select>
               </div>
 
@@ -553,7 +559,7 @@
         
         <div class="clean-card rounded-xl p-5 space-y-3">
           <h4 class="text-xs font-bold uppercase tracking-wider text-gray-700 pb-2 border-b border-gray-100">
-            Fatores de Segurança e Limites de Ponta (Estak PRO)
+            Fatores de Segurança e Limites de Ponta (NBR 6122:2019)
           </h4>
           <div class="grid grid-cols-2 gap-3 text-xs">
             <div>
@@ -641,7 +647,7 @@
                 <select id="selFck" onchange="onFckPresetChange()" class="flex-1 bg-white border border-gray-300 rounded-lg p-2 font-mono font-bold text-gray-800">
                   <option value="20">C20 (fck = 20 MPa)</option>
                   <option value="25">C25 (fck = 25 MPa)</option>
-                  <option value="30" selected>C30 (fck = 30 MPa - Padrão DPT)</option>
+                  <option value="30" selected>C30 (fck = 30 MPa)</option>
                   <option value="35">C35 (fck = 35 MPa)</option>
                   <option value="40">C40 (fck = 40 MPa)</option>
                   <option value="50">C50 (fck = 50 MPa)</option>
@@ -823,7 +829,7 @@
           <div class="flex items-center gap-2">
             <span class="text-xs text-gray-600 font-medium">Método Ativo:</span>
             <select id="selMetodoAtivo" onchange="onMetodoAtivoChange()" class="bg-gray-50 border border-gray-300 rounded-lg p-2 text-xs font-bold text-gray-800">
-              <option value="decourt" selected>DÉCOURT E QUARESMA (Padrão Estak PRO)</option>
+              <option value="decourt" selected>DÉCOURT E QUARESMA (1996)</option>
               <option value="teixeira">TEIXEIRA (1996)</option>
               <option value="aoki">AOKI E VELLOSO (1975)</option>
               <option value="antunes">ANTUNES E CABRAL</option>
@@ -831,7 +837,7 @@
           </div>
         </div>
 
-        <!-- Tabela Comparativa Estak PRO -->
+        <!-- Tabela Comparativa de Capacidade de Carga -->
         <div class="overflow-x-auto">
           <table class="w-full text-xs text-center border border-gray-200 rounded-lg overflow-hidden">
             <thead class="bg-gray-100 text-gray-700 font-bold uppercase text-[10px]">
@@ -917,7 +923,7 @@
           </div>
         </div>
 
-        <!-- Desenho Visual do Bloco com Reações por Estaca (Estak PRO) (6 colunas) -->
+        <!-- Desenho Visual do Bloco com Reações por Estaca (6 colunas) -->
         <div class="lg:col-span-6 clean-card rounded-xl p-5 flex flex-col items-center justify-between">
           <div class="w-full flex items-center justify-between pb-2 border-b border-gray-100 mb-2">
             <span class="text-xs font-bold uppercase tracking-wider text-gray-700">Mapa de Cargas por Estaca no Bloco</span>
@@ -928,7 +934,7 @@
             <svg id="svgReacoesBloco" width="100%" height="280" viewBox="0 0 420 320"></svg>
           </div>
 
-          <!-- Legenda Cromática Estak PRO -->
+          <!-- Legenda Cromática de Solicitação -->
           <div class="w-full flex flex-wrap items-center justify-center gap-2.5 text-[10px] font-bold py-2 border-t border-b border-gray-100 my-2">
             <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> &lt; 70% Segura</span>
             <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-sky-500 inline-block"></span> 70 - 85% Conforme</span>
@@ -954,68 +960,159 @@
     </section>
 
     <!-- ========================================== -->
-    <!-- ABA 6: ANÁLISE ESTRUTURAL (DIAGRAMAS)      -->
+    <!-- ABA 6: ANÁLISE ESTRUTURAL & METRO A METRO   -->
     <!-- ========================================== -->
     <section id="paneAnaliseEstrut" class="tab-pane space-y-6">
       
-      <div class="clean-card rounded-xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <!-- Cabeçalho e Seletor de Estaca -->
+      <div class="clean-card rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h3 class="font-bold text-sm sm:text-base text-gray-800 font-display">Diagramas da Estaca ao Longo da Profundidade</h3>
-          <p class="text-xs text-gray-500">Distribuição contínua de esforços normais, cortantes, momentos e deformada elástica (Molas de Winkler).</p>
+          <h3 class="font-bold text-sm sm:text-base text-gray-800 font-display">Análise Estrutural e Resistência ao Longo da Profundidade</h3>
+          <p class="text-xs text-gray-500">Distribuição contínua de esforços normais, cortantes, momentos fletores e capacidade resistente geotécnica metro a metro.</p>
         </div>
         <div class="flex items-center gap-3">
-          <span class="text-xs font-bold text-gray-700">Estaca em Análise:</span>
-          <select id="selEstacaDiagrama" onchange="drawDiagramasEstaca()" class="bg-gray-50 border border-gray-300 rounded-lg px-3 py-1.5 text-xs font-bold font-mono text-gray-800">
-            <option value="1">Estaca E1 (Bordo Superior)</option>
-            <option value="5">Estaca E5 (Centro)</option>
-            <option value="9" selected>Estaca E9 (Mais Solicitada)</option>
+          <span class="text-xs font-bold text-gray-700 whitespace-nowrap">Estaca em Análise:</span>
+          <select id="selEstacaDiagrama" onchange="drawDiagramasEstaca()" class="bg-gray-50 border border-gray-300 rounded-lg px-3 py-1.5 text-xs font-bold font-mono text-gray-800 outline-none focus:border-[#fb6624]">
+            <option value="E1">Estaca E1</option>
           </select>
         </div>
       </div>
 
-      <!-- 4 DIAGRAMAS LADO A LADO PADRÃO ESTAK PRO -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        
-        <!-- 1. Esforço Normal Nk(z) -->
-        <div class="clean-card rounded-xl p-4 flex flex-col items-center">
-          <span class="text-xs font-bold text-gray-800 mb-1">Normal Nk (ELS)</span>
-          <span class="text-[10px] text-orange-600 font-bold mb-2">Estaca Comprimida (N &gt; 0)</span>
-          <div class="w-full bg-white border border-gray-200 rounded p-1">
-            <svg id="svgDiagNormal" width="100%" height="340" viewBox="0 0 200 360"></svg>
-          </div>
-          <span class="text-[10px] font-mono text-gray-500 mt-2" id="lblDiagNormalTopo">Topo: 19.64 tf &rarr; Base: 4.17 tf</span>
+      <!-- 4 Cards Resumo de Esforços da Estaca Selecionada -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-mono">
+        <div class="clean-card rounded-xl p-4 space-y-1 border-l-4 border-l-blue-600">
+          <span class="text-[10px] text-gray-500 font-sans font-bold uppercase block">Carga de Topo (Nk,topo):</span>
+          <span class="text-base sm:text-lg font-bold text-blue-700 block" id="lblResumoNkTopo">-- tf</span>
+          <span class="text-[11px] text-gray-400 font-sans">Com peso próprio da estaca</span>
         </div>
 
-        <!-- 2. Cortante Vk(z) -->
-        <div class="clean-card rounded-xl p-4 flex flex-col items-center">
-          <span class="text-xs font-bold text-gray-800 mb-1">Cortante Vk (ELS)</span>
-          <span class="text-[10px] text-emerald-700 font-bold mb-2">Direção B</span>
-          <div class="w-full bg-white border border-gray-200 rounded p-1">
-            <svg id="svgDiagCortante" width="100%" height="340" viewBox="0 0 200 360"></svg>
-          </div>
-          <span class="text-[10px] font-mono text-gray-500 mt-2" id="lblDiagCortanteTopo">V_máx = 0.23 tf</span>
+        <div class="clean-card rounded-xl p-4 space-y-1 border-l-4 border-l-orange-500">
+          <span class="text-[10px] text-gray-500 font-sans font-bold uppercase block">Carga na Ponta (Nk,base):</span>
+          <span class="text-base sm:text-lg font-bold text-orange-600 block" id="lblResumoNkPonta">-- tf</span>
+          <span class="text-[11px] text-gray-400 font-sans">Transferida ao apoio de ponta</span>
         </div>
 
-        <!-- 3. Momento Fletor Mk(z) -->
-        <div class="clean-card rounded-xl p-4 flex flex-col items-center">
-          <span class="text-xs font-bold text-gray-800 mb-1">Mom. Fletor Mk (ELS)</span>
-          <span class="text-[10px] text-amber-700 font-bold mb-2">Direção B</span>
-          <div class="w-full bg-white border border-gray-200 rounded p-1">
-            <svg id="svgDiagMomento" width="100%" height="340" viewBox="0 0 200 360"></svg>
-          </div>
-          <span class="text-[10px] font-mono text-gray-500 mt-2" id="lblDiagMomentoMax">M_máx = -0.32 tf·m</span>
+        <div class="clean-card rounded-xl p-4 space-y-1 border-l-4 border-l-amber-500">
+          <span class="text-[10px] text-gray-500 font-sans font-bold uppercase block">Momento Máx (Mk,máx):</span>
+          <span class="text-base sm:text-lg font-bold text-amber-700 block" id="lblResumoMkMax">-- tf·m</span>
+          <span class="text-[11px] text-gray-400 font-sans">Dissipado pelo solo (Winkler)</span>
         </div>
 
-        <!-- 4. Deslocamento Horizontal y(z) -->
-        <div class="clean-card rounded-xl p-4 flex flex-col items-center">
-          <span class="text-xs font-bold text-gray-800 mb-1">Deslocamento Horizontal</span>
-          <span class="text-[10px] text-red-700 font-bold mb-2">&delta;h &le; 12 mm (OK)</span>
-          <div class="w-full bg-white border border-gray-200 rounded p-1">
-            <svg id="svgDiagDeslocamento" width="100%" height="340" viewBox="0 0 200 360"></svg>
+        <div class="clean-card rounded-xl p-4 space-y-1 border-l-4 border-l-emerald-600">
+          <span class="text-[10px] text-gray-500 font-sans font-bold uppercase block">Tensão Concreto (σc,máx):</span>
+          <span class="text-base sm:text-lg font-bold text-emerald-700 block" id="lblResumoSigmaC">-- MPa</span>
+          <span class="text-[11px] text-gray-400 font-sans">Admissível: σc,disp = 0.30 fck</span>
+        </div>
+      </div>
+
+      <!-- Gráfico de Transferência de Carga e Resistência Metro a Metro (Chart.js) -->
+      <div class="clean-card rounded-xl p-5 space-y-3">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-gray-100 gap-2">
+          <div>
+            <h4 class="text-xs font-bold uppercase tracking-wider text-gray-800 flex items-center gap-2">
+              <i class="fa-solid fa-chart-line text-[#fb6624]"></i>
+              <span>Gráfico de Dissipação de Carga e Capacidade Resistente Metro a Metro</span>
+            </h4>
+            <p class="text-[11px] text-gray-500">Curvas ao longo da profundidade: solicitação Nk(z) vs atrito lateral acumulado &Sigma;Rl(z) e capacidade resistente Radm(z).</p>
           </div>
-          <span class="text-[10px] font-mono text-gray-500 mt-2" id="lblDiagDeslocTopo">&delta;topo = 2.04 mm</span>
+          <span class="text-[11px] font-mono text-gray-500" id="lblGraficoMetodoInfo">Método Décourt-Quaresma · NBR 6122</span>
+        </div>
+        <div class="w-full relative bg-white rounded-lg p-2" style="height: 340px;">
+          <canvas id="graficoResistenciaMetro"></canvas>
+        </div>
+      </div>
+
+      <!-- 4 Diagramas de Esforços ao Longo da Estaca -->
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-gray-700">Diagramas de Solicitação Estrutural ao Longo do Fuste</h4>
+          <span class="text-[11px] font-mono text-gray-500">ELS / Esforços Característicos</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          
+          <!-- 1. Esforço Normal Nk(z) -->
+          <div class="clean-card rounded-xl p-4 flex flex-col items-center">
+            <span class="text-xs font-bold text-gray-800 mb-1">Normal Nk (ELS)</span>
+            <span class="text-[10px] text-orange-600 font-bold mb-2">Estaca Comprimida (N &gt; 0)</span>
+            <div class="w-full bg-white border border-gray-200 rounded p-1">
+              <svg id="svgDiagNormal" width="100%" height="320" viewBox="0 0 200 340"></svg>
+            </div>
+            <span class="text-[10px] font-mono text-gray-500 mt-2" id="lblDiagNormalTopo">--</span>
+          </div>
+
+          <!-- 2. Cortante Vk(z) -->
+          <div class="clean-card rounded-xl p-4 flex flex-col items-center">
+            <span class="text-xs font-bold text-gray-800 mb-1">Cortante Vk (ELS)</span>
+            <span class="text-[10px] text-emerald-700 font-bold mb-2">Reação Horizontal do Solo</span>
+            <div class="w-full bg-white border border-gray-200 rounded p-1">
+              <svg id="svgDiagCortante" width="100%" height="320" viewBox="0 0 200 340"></svg>
+            </div>
+            <span class="text-[10px] font-mono text-gray-500 mt-2" id="lblDiagCortanteTopo">--</span>
+          </div>
+
+          <!-- 3. Momento Fletor Mk(z) -->
+          <div class="clean-card rounded-xl p-4 flex flex-col items-center">
+            <span class="text-xs font-bold text-gray-800 mb-1">Mom. Fletor Mk (ELS)</span>
+            <span class="text-[10px] text-amber-700 font-bold mb-2">Flexão Devida a Cortante de Topo</span>
+            <div class="w-full bg-white border border-gray-200 rounded p-1">
+              <svg id="svgDiagMomento" width="100%" height="320" viewBox="0 0 200 340"></svg>
+            </div>
+            <span class="text-[10px] font-mono text-gray-500 mt-2" id="lblDiagMomentoMax">--</span>
+          </div>
+
+          <!-- 4. Deslocamento Horizontal y(z) -->
+          <div class="clean-card rounded-xl p-4 flex flex-col items-center">
+            <span class="text-xs font-bold text-gray-800 mb-1">Deslocamento Horizontal</span>
+            <span class="text-[10px] text-red-700 font-bold mb-2">&delta;h &le; 12 mm (OK)</span>
+            <div class="w-full bg-white border border-gray-200 rounded p-1">
+              <svg id="svgDiagDeslocamento" width="100%" height="320" viewBox="0 0 200 340"></svg>
+            </div>
+            <span class="text-[10px] font-mono text-gray-500 mt-2" id="lblDiagDeslocTopo">--</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Tabela Detalhada Metro a Metro -->
+      <div class="clean-card rounded-xl p-5 space-y-3">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-gray-100 gap-2">
+          <div>
+            <h4 class="text-xs font-bold uppercase tracking-wider text-gray-700 flex items-center gap-1.5">
+              <i class="fa-solid fa-table-cells text-[#fb6624]"></i>
+              <span>Tabela Detalhada de Esforços e Resistência Metro a Metro</span>
+            </h4>
+            <p class="text-[11px] text-gray-500">Detalhamento progressivo desde a cota 0,00m até a base da estaca (<span id="lblTabelaProfTotal" class="font-bold text-gray-800">9,00m</span>).</p>
+          </div>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">100% Conforme NBR 6118 / NBR 6122</span>
         </div>
 
+        <div class="overflow-x-auto border border-gray-200 rounded-lg">
+          <table class="w-full text-xs text-center">
+            <thead class="bg-gray-50 text-gray-700 font-bold uppercase text-[10px] border-b border-gray-200">
+              <tr>
+                <th class="p-2.5 text-center">Cota z (m)</th>
+                <th class="p-2.5 text-left pl-3">Solo / Camada</th>
+                <th class="p-2.5 font-mono">N_SPT</th>
+                <th class="p-2.5 text-blue-600 font-mono">&Delta;Rl (tf)</th>
+                <th class="p-2.5 text-blue-800 font-mono">&Sigma;Rl (tf)</th>
+                <th class="p-2.5 text-emerald-700 font-mono">Radm (tf)</th>
+                <th class="p-2.5 text-orange-600 font-bold font-mono">Nk(z) (tf)</th>
+                <th class="p-2.5 text-gray-900 font-bold font-mono">Nd(z) (tf)</th>
+                <th class="p-2.5 text-emerald-800 font-mono">Vk(z) (tf)</th>
+                <th class="p-2.5 text-amber-700 font-mono">Mk(z) (tf·m)</th>
+                <th class="p-2.5 font-bold font-mono">&sigma;c (MPa)</th>
+                <th class="p-2.5">Condição</th>
+              </tr>
+            </thead>
+            <tbody id="tblCorpoAnaliseMetro" class="divide-y divide-gray-100 font-mono text-xs">
+              <!-- Preenchido via JS -->
+            </tbody>
+          </table>
+        </div>
+        <div class="flex items-center justify-between text-[11px] text-gray-500 pt-1">
+          <span>* &Delta;Rl: atrito lateral transferido no metro · &Sigma;Rl: atrito acumulado · Radm: capacidade admissível geotécnica acumulada.</span>
+          <span>&sigma;c &le; &sigma;c,disp (0,30 fck) · Conforme NBR 6118</span>
+        </div>
       </div>
 
     </section>
@@ -1165,11 +1262,11 @@
           <div>
             <h2 class="text-xl font-bold font-display text-gray-900 tracking-tight">MOURA BARRETTO ENGENHARIA LTDA</h2>
             <p class="text-xs text-gray-600 font-medium">RELATÓRIO TÉCNICO DE DIMENSIONAMENTO GEOTÉCNICO E ESTRUTURAL DE ESTACAS</p>
-            <p class="text-[11px] text-gray-500 font-mono">Conforme NBR 6122:2019 e NBR 6118:2023 · Rotina Integrada Estak PRO</p>
+            <p class="text-[11px] text-gray-500 font-mono">Conforme NBR 6122:2019 e NBR 6118:2023 · Moura Barretto Engenharia</p>
           </div>
           <div class="text-right font-mono text-[11px] text-gray-600">
-            <p>Obra: <b>Nova Sede DPT - Salvador / BA</b></p>
-            <p>Proprietário: <b>CONDER / Governo da Bahia</b></p>
+            <p>Obra: <b id="repNomeObra">Projeto Executivo de Fundações</b></p>
+            <p>Proprietário: <span id="repProprietario">Cliente / Contratante</span></p>
             <p>Responsável: <b>Eng. Mateus Moura Barretto · CREA-BA 051805952-9</b></p>
           </div>
         </div>
@@ -1201,12 +1298,12 @@
         <div class="space-y-2">
           <h4 class="font-bold text-sm uppercase text-gray-800 border-b pb-1 font-display">2. Verificações de Capacidade de Carga Geotécnica</h4>
           <p class="text-gray-600 leading-relaxed">
-            A capacidade de carga geotécnica foi verificada com base na sondagem <b>SP-01</b> do DPT Salvador, avaliando simultaneamente os métodos de <b>Aoki-Velloso (1975)</b>, <b>Décourt-Quaresma (1996)</b>, <b>Teixeira (1996)</b> e <b>Antunes-Cabral</b>.
+            A capacidade de carga geotécnica foi verificada com base no perfil de sondagem representativo da obra, avaliando simultaneamente os métodos de <b>Aoki-Velloso (1975)</b>, <b>Décourt-Quaresma (1996)</b>, <b>Teixeira (1996)</b> e <b>Antunes-Cabral</b>.
           </p>
           <div class="bg-gray-50 p-3 rounded-lg border font-mono">
             <span class="text-gray-700 block">• Método Décourt e Quaresma: <b>Pgeo = 46.23 tf</b> &rarr; <b>Padm,c = 23.12 tf</b> (FS = 2.0).</span>
-            <span class="text-gray-700 block">• Reação máxima atuante na estaca mais solicitada (E9): <b>Nsd = 19.64 tf + 3.12 tf = 22.76 tf &le; 23.12 tf (ATENDE COM 100% DE SEGURANÇA)</b>.</span>
-            <span class="text-gray-700 block">• Tração admissível: <b>Padm,t = 13.02 tf</b> (Nenhuma estaca submetida à tração).</span>
+            <span class="text-gray-700 block">• Reação máxima atuante na estaca mais solicitada (<span id="repEstacaCriticaId">E9</span>): <b>Nsd = <span id="repNsdCalcVal">22.76</span> tf &le; <span id="repPadmCompVal">23.12</span> tf (ATENDE COM 100% DE SEGURANÇA)</b>.</span>
+            <span class="text-gray-700 block">• Tração admissível: <b>Padm,t = <span id="repPadmTracVal">13.02</span> tf</b> (Nenhuma estaca submetida à tração excessiva).</span>
           </div>
         </div>
 
@@ -1219,8 +1316,8 @@
           <div class="bg-gray-50 p-3 rounded-lg border font-mono space-y-1">
             <p>• <b>Armadura Longitudinal:</b> <span id="repArmLongTexto">6 &phi; 10.0 mm (As = 4.71 cm² &ge; 0.4% Ac)</span> com comprimento de <span id="repGaiolaComp">4.00 m</span>.</p>
             <p>• <b>Armadura Transversal:</b> <span id="repArmTransTexto">Estribos &phi; 6.3 mm c/ 12 cm</span> (atende plenamente ao cisalhamento e confinamento).</p>
-            <p>• <b>Compressão Resistente de Cálculo:</b> Nrd = <b>138.03 tf</b> &ge; Nsd = <b>27.50 tf</b> (FS = 5.02 OK).</p>
-            <p>• <b>Deslocamento Horizontal no Topo:</b> &delta;h = <b>2.04 mm &le; 12.00 mm (ATENDE)</b>.</p>
+            <p>• <b>Compressão Resistente de Cálculo:</b> Nrd = <b id="repNrdVal">138.03 tf</b> &ge; Nsd = <b id="repNsdVal">27.50 tf</b> (<span id="repFsEstrut">FS = 5.02 OK</span>).</p>
+            <p>• <b>Deslocamento Horizontal no Topo:</b> &delta;h = <b id="repDeslocTopoVal">2.04 mm &le; 12.00 mm (ATENDE)</b>.</p>
           </div>
         </div>
 
@@ -1238,16 +1335,16 @@
         <span>• Salvador/BA • CREA-BA 051805952-9</span>
       </div>
       <div>
-        <span>Rotina Técnica baseada em NBR 6122:2019 e NBR 6118:2023 · Módulo Estak PRO Core</span>
+        <span>Rotina Técnica baseada em NBR 6122:2019 e NBR 6118:2023 · Moura Barretto Engenharia</span>
       </div>
     </div>
   </footer>
 
   <!-- SCRIPT DE CÁLCULO, GRÁFICOS E INTERATIVIDADE -->
   <script>
-    // PRESETS DE SONDAGEM E DADOS REAIS DO ESTAK PRO
+    // PRESETS DE SONDAGEM
     const PRESETS = {
-      "dpt-sp01": {
+      "sp01": {
         na: 100.0,
         camadas: [
           { cota: 1, solo: 'Silte argiloso', nspt: 4 },
@@ -1284,7 +1381,7 @@
           { cota: 32, solo: 'Silte argiloso', nspt: 0 }
         ]
       },
-      "dpt-sp06": {
+      "sp06": {
         na: 6.5,
         camadas: [
           { cota: 1, solo: 'Areia', nspt: 12 },
@@ -1309,7 +1406,7 @@
           { cota: 20, solo: 'Silte arenoso', nspt: 24 }
         ]
       },
-      "dpt-sp02": {
+      "sp02": {
         na: 8.0,
         camadas: [
           { cota: 1, solo: 'Areia', nspt: 6 },
@@ -1330,8 +1427,13 @@
         ]
       }
     };
+    // Aliases para compatibilidade
+    PRESETS["dpt-sp01"] = PRESETS["sp01"];
+    PRESETS["dpt-sp06"] = PRESETS["sp06"];
+    PRESETS["dpt-sp02"] = PRESETS["sp02"];
 
     let chartSptInstance = null;
+    let chartResistenciaMetroInstance = null;
     let activeNavTab = 'spt';
     let currentLancView = 'planta';
     let metodoGeotAtivo = 'decourt'; // 'decourt' | 'teixeira' | 'aoki' | 'antunes'
@@ -1339,7 +1441,18 @@
     const STORAGE_KEY_ESTACAS_V2 = 'mb_estacas_state_v2';
     let isRestoringEstacas = false;
 
-    // Navegação das Abas Estak PRO
+    // Atualização reativa do Nome da Obra
+    function atualizarNomeObra() {
+      const inp = document.getElementById('inpNomeObra');
+      const nome = (inp ? inp.value : '') || 'Projeto Executivo de Fundações';
+      const elRep = document.getElementById('repNomeObra');
+      if (elRep) elRep.innerText = nome;
+      const elPrint = document.getElementById('printNomeObra');
+      if (elPrint) elPrint.innerText = nome;
+      saveStateEstacas();
+    }
+
+    // Navegação das Abas
     function switchNavTab(tabId) {
       activeNavTab = tabId;
       document.querySelectorAll('.nav-tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -1361,6 +1474,9 @@
       }
       if (tabId === 'analiseEstrut') {
         drawDiagramasEstaca();
+        if (chartResistenciaMetroInstance) {
+          setTimeout(() => chartResistenciaMetroInstance.resize(), 50);
+        }
       }
       if (tabId === 'dimEstrut') {
         renderSecaoTransversal();
@@ -1536,7 +1652,7 @@
     let padmtAdotGlobal = -13.02;
     let lastCalculatedCoords = [];
 
-    // Classificação Cromática Estak PRO (<70% Segura, 70-85% Conforme, 85-100% Crítica, >100% Sobrecarga, Tração)
+    // Classificação Cromática de Solicitação (<70% Segura, 70-85% Conforme, 85-100% Crítica, >100% Sobrecarga, Tração)
     function getStatusEstaca(niTotal, padm, padmt) {
       if (niTotal < 0) {
         const isTracOk = Math.abs(niTotal) <= Math.abs(padmt || -10);
@@ -1903,7 +2019,7 @@
       drawDiagramasEstaca();
       renderSecaoTransversal();
       renderElevacaoGaiola();
-      atualizarRelatorio(nEstacas, blocoLargX_m, blocoLargY_m, hbM, L, padmAdot, maxReacao);
+      atualizarRelatorio(nEstacas, blocoLargX_m, blocoLargY_m, hbM, L, padmAdot, maxReacao, estacaMaxId, padmtAdot);
 
       saveStateEstacas();
     }
@@ -2016,7 +2132,7 @@
           <text x="${W - 25}" y="${cy - 5}" font-family="monospace" font-size="11" fill="#94a3b8">X</text>
           <text x="${cx + 5}" y="25" font-family="monospace" font-size="11" fill="#94a3b8">Y</text>
 
-          <!-- Bloco Bege Estak PRO -->
+          <!-- Bloco de Coroamento -->
           <rect x="${cx - bW_px/2}" y="${cy - bH_px/2}" width="${bW_px}" height="${bH_px}" fill="#e8cfad" stroke="#92724e" stroke-width="2" rx="4" />
         `;
 
@@ -2056,7 +2172,7 @@
       }
     }
 
-    // Mapa de Cargas por Estaca no Bloco (Tela 5 Estak PRO)
+    // Mapa de Cargas por Estaca no Bloco
     function drawReacoesBloco() {
       const svg = document.getElementById('svgReacoesBloco');
       if (!svg) return;
@@ -2135,16 +2251,133 @@
       svg.innerHTML = out;
     }
 
-    // Diagramas Estruturais ao Longo da Estaca (Padrão Tela 6 Estak PRO)
+    // Gráfico de Transferência de Carga e Resistência Metro a Metro (Chart.js)
+    function renderGraficoResistenciaMetro(metrosData) {
+      const ctx = document.getElementById('graficoResistenciaMetro');
+      if (!ctx) return;
+
+      const labels = metrosData.map(d => d.z === 0 ? '0,0m' : d.z.toFixed(0) + 'm');
+      const dataNk = metrosData.map(d => parseFloat(d.nk.toFixed(2)));
+      const dataRadm = metrosData.map(d => d.rAdm > 0 ? parseFloat(d.rAdm.toFixed(2)) : null);
+      const dataAcumRl = metrosData.map(d => d.acumRl > 0 ? parseFloat(d.acumRl.toFixed(2)) : null);
+      const dataNd = metrosData.map(d => parseFloat(d.nd.toFixed(2)));
+
+      if (chartResistenciaMetroInstance) {
+        chartResistenciaMetroInstance.destroy();
+      }
+
+      chartResistenciaMetroInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Nk(z) Solicitante (tf)',
+              data: dataNk,
+              borderColor: '#ea580c',
+              backgroundColor: 'rgba(234, 88, 12, 0.1)',
+              borderWidth: 2.5,
+              pointRadius: 3,
+              pointBackgroundColor: '#ea580c',
+              fill: false,
+              tension: 0.15
+            },
+            {
+              label: 'Radm(z) Geotécnica (tf)',
+              data: dataRadm,
+              borderColor: '#10b981',
+              backgroundColor: 'rgba(16, 185, 129, 0.1)',
+              borderWidth: 2.5,
+              pointRadius: 3,
+              pointBackgroundColor: '#10b981',
+              fill: false,
+              tension: 0.15
+            },
+            {
+              label: 'ΣRl(z) Atrito Acumulado (tf)',
+              data: dataAcumRl,
+              borderColor: '#0284c7',
+              backgroundColor: 'rgba(2, 132, 199, 0.1)',
+              borderWidth: 2,
+              borderDash: [4, 3],
+              pointRadius: 2.5,
+              pointBackgroundColor: '#0284c7',
+              fill: false,
+              tension: 0.15
+            },
+            {
+              label: 'Nd(z) Majorado 1,4 (tf)',
+              data: dataNd,
+              borderColor: '#dc2626',
+              backgroundColor: 'rgba(220, 38, 38, 0.05)',
+              borderWidth: 1.5,
+              borderDash: [2, 2],
+              pointRadius: 2,
+              pointBackgroundColor: '#dc2626',
+              fill: false,
+              tension: 0.15
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: 'y', // Profundidade no eixo Y vertical
+          scales: {
+            x: {
+              position: 'top',
+              title: { display: true, text: 'Força / Capacidade (tf)', font: { size: 11, weight: 'bold' } },
+              grid: { color: '#e5e7eb' },
+              min: 0
+            },
+            y: {
+              reverse: true, // 0m no topo, L m na base
+              title: { display: true, text: 'Profundidade z (m)', font: { size: 11, weight: 'bold' } },
+              grid: { color: '#f3f4f6' }
+            }
+          },
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { boxWidth: 14, font: { size: 11 } }
+            },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => ` ${ctx.dataset.label}: ${ctx.raw} tf`
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Análise Estrutural e Resistência Metro a Metro (Aba 6)
     function drawDiagramasEstaca() {
       const L = parseFloat(document.getElementById('comprimentoEstaca').value) || 9.0;
       const Fx = parseFloat(document.getElementById('esforcoFx').value) || 2.10;
       const nEstacas = parseInt(document.getElementById('selNumEstacas').value) || 9;
-      const svgN = document.getElementById('svgDiagNormal');
-      const svgV = document.getElementById('svgDiagCortante');
-      const svgM = document.getElementById('svgDiagMomento');
-      const svgD = document.getElementById('svgDiagDeslocamento');
-      if (!svgN) return;
+      const diamCm = parseFloat(document.getElementById('diametroEstaca').value) || 40;
+      const diamM = diamCm / 100;
+      const Ap = (Math.PI * Math.pow(diamM, 2)) / 4;
+      const U = Math.PI * diamM;
+      const fck = parseFloat(document.getElementById('inpFck')?.value) || 30;
+      const sigmaCompDisp = 0.30 * fck; // MPa admissível
+
+      // Ler camadas da tabela de sondagem
+      const trs = document.querySelectorAll('#tabelaCamadasSpt tr');
+      const camadas = [];
+      trs.forEach(tr => {
+        const soloSel = tr.querySelector('.solo-select');
+        const nsptInp = tr.querySelector('.nspt-input');
+        const cotaTd = tr.querySelector('td');
+        if (soloSel && nsptInp) {
+          camadas.push({
+            cota: cotaTd ? parseInt(cotaTd.innerText) || 1 : 1,
+            solo: soloSel.value,
+            nspt: parseFloat(nsptInp.value) || 0
+          });
+        }
+      });
 
       // Obter dados da estaca selecionada
       const selDiag = document.getElementById('selEstacaDiagrama');
@@ -2152,18 +2385,173 @@
       let pEstaca = (lastCalculatedCoords || []).find(p => p.id === estacaId);
       if (!pEstaca && lastCalculatedCoords && lastCalculatedCoords.length > 0) pEstaca = lastCalculatedCoords[0];
       
-      const nTopo = pEstaca && pEstaca.niTotal ? pEstaca.niTotal : 19.64;
-      const nPonta = Math.max(nTopo * 0.20, 1.2);
-      const n25 = nTopo - (nTopo - nPonta) * 0.35;
-      const n50 = nTopo - (nTopo - nPonta) * 0.65;
-      const n75 = nTopo - (nTopo - nPonta) * 0.85;
+      const nTopo = pEstaca && pEstaca.niTotal ? pEstaca.niTotal : 22.18;
+      const vTopo = Fx / nEstacas;
 
-      const vTopo = (Fx / nEstacas) * 1.0;
-      const mMax = vTopo * (L * 0.18);
+      // Comprimento elástico l0 para estaca flexível no solo
+      const l0 = Math.max(3.5 * diamM, 1.2); // ~1.40m
+      const beta = 1.0 / l0;
+
+      // Metro final
+      const metroFinal = Math.min(Math.round(L), camadas.length > 0 ? camadas.length : 32);
+
+      // 1. Atrito total mobilizável ao longo do fuste da estaca
+      let totalAtritoEstaca = 0;
+      for (let m = 0; m < metroFinal; m++) {
+        const cam = camadas[m] || { solo: 'Silte argiloso', nspt: 10 };
+        const nsptLat = Math.min(Math.max(cam.nspt, 1), 15);
+        let ql = ((nsptLat / 3.0) + 1.0) * 1.0; // tf/m²
+        if (metodoGeotAtivo === 'teixeira') ql *= 0.95;
+        else if (metodoGeotAtivo === 'antunes') ql *= 0.706;
+        else if (metodoGeotAtivo === 'aoki') {
+          ql = (0.028 * 4.5 * 10 * Math.min(cam.nspt, 50) / 6.0);
+        }
+        totalAtritoEstaca += ql * U * 1.0;
+      }
+      const qPonta = Math.max(nTopo * 0.20, 1.2);
+      const qAtritoMobilizado = Math.max(nTopo - qPonta, 0);
+
+      // 2. Loop de cálculo metro a metro
+      let acumRl = 0;
+      const metrosData = [];
+
+      // Cota 0.0m (Topo / Cabeça da estaca)
+      const sigmaC0 = (nTopo * 1.40 * 0.00980665) / Ap;
+      metrosData.push({
+        z: 0,
+        solo: 'Cabeça da Estaca / Bloco',
+        nspt: '-',
+        deltaRl: 0,
+        acumRl: 0,
+        rAdm: padmAdotGlobal,
+        nk: nTopo,
+        nd: nTopo * 1.40,
+        vk: vTopo,
+        mk: 0,
+        sigmaC: sigmaC0,
+        isOk: sigmaC0 <= sigmaCompDisp
+      });
+
+      for (let m = 1; m <= metroFinal; m++) {
+        const cam = camadas[m - 1] || { solo: 'Silte argiloso', nspt: 10 };
+        const nsptLat = Math.min(Math.max(cam.nspt, 1), 15);
+        let ql = ((nsptLat / 3.0) + 1.0) * 1.0;
+        if (metodoGeotAtivo === 'teixeira') ql *= 0.95;
+        else if (metodoGeotAtivo === 'antunes') ql *= 0.706;
+        else if (metodoGeotAtivo === 'aoki') {
+          ql = (0.028 * 4.5 * 10 * Math.min(cam.nspt, 50) / 6.0);
+        }
+        const deltaRl = ql * U * 1.0;
+        acumRl += deltaRl;
+
+        // Capacidade admissível geotécnica acumulada caso estaca parasse nessa cota m
+        const nsptPonta = Math.min(cam.nspt, 50);
+        let pp = (0.30 * 200 * nsptPonta * Ap) / 10.0;
+        if (pp > acumRl * 0.25) pp = acumRl * 0.25;
+        const rAdmMetro = (acumRl + pp) / 2.0;
+
+        // Dissipação de Nk
+        const fracAtrito = totalAtritoEstaca > 0 ? (acumRl / totalAtritoEstaca) : (m / metroFinal);
+        const ppTrecho = Ap * m * 2.5 * (m / metroFinal);
+        const nkMetro = Math.max(nTopo - (qAtritoMobilizado * fracAtrito) + ppTrecho, qPonta);
+        const ndMetro = nkMetro * 1.40;
+
+        // Cortante e Momento (Molas horizontais de Winkler)
+        const expTerm = Math.exp(-beta * m);
+        const vkMetro = vTopo * expTerm * Math.cos(beta * m);
+        const mkMetro = (vTopo / beta) * expTerm * Math.sin(beta * m);
+
+        // Tensão atuante de compressão no concreto
+        const sigmaCMetro = (ndMetro * 0.00980665) / Ap;
+
+        metrosData.push({
+          z: m,
+          solo: cam.solo,
+          nspt: cam.nspt,
+          deltaRl: deltaRl,
+          acumRl: acumRl,
+          rAdm: rAdmMetro,
+          nk: nkMetro,
+          nd: ndMetro,
+          vk: vkMetro,
+          mk: mkMetro,
+          sigmaC: sigmaCMetro,
+          isOk: (sigmaCMetro <= sigmaCompDisp)
+        });
+      }
+
+      // 3. Preencher Tabela Metro a Metro
+      const tbody = document.getElementById('tblCorpoAnaliseMetro');
+      if (tbody) {
+        tbody.innerHTML = metrosData.map(d => {
+          const isOkClass = d.isOk ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-red-50 text-red-700 border-red-200';
+          const statusText = d.isOk ? 'Conforme' : 'Atenção';
+          return `
+            <tr class="hover:bg-gray-50">
+              <td class="p-2 font-bold text-gray-900">${d.z === 0 ? '0,00 (Topo)' : d.z.toFixed(1) + ' m'}</td>
+              <td class="p-2 text-left pl-3 text-gray-700 font-sans">${d.solo}</td>
+              <td class="p-2 font-bold ${d.nspt === '-' ? 'text-gray-400' : 'text-red-600'}">${d.nspt}</td>
+              <td class="p-2 text-blue-600 font-semibold">${d.deltaRl > 0 ? d.deltaRl.toFixed(2) : '-'}</td>
+              <td class="p-2 text-blue-800 font-bold">${d.acumRl > 0 ? d.acumRl.toFixed(2) : '-'}</td>
+              <td class="p-2 text-emerald-700 font-bold">${d.rAdm > 0 ? d.rAdm.toFixed(2) : '-'}</td>
+              <td class="p-2 text-orange-600 font-bold">${d.nk.toFixed(2)}</td>
+              <td class="p-2 text-gray-900 font-bold">${d.nd.toFixed(2)}</td>
+              <td class="p-2 text-emerald-800">${d.vk.toFixed(2)}</td>
+              <td class="p-2 text-amber-700 font-semibold">${d.mk.toFixed(2)}</td>
+              <td class="p-2 font-bold ${d.sigmaC <= sigmaCompDisp ? 'text-gray-800' : 'text-red-600'}">${d.sigmaC.toFixed(2)}</td>
+              <td class="p-2 font-sans"><span class="px-2 py-0.5 rounded text-[10px] font-bold border ${isOkClass}">${statusText}</span></td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // 4. Atualizar Badges de Resumo
+      const lastM = metrosData[metrosData.length - 1];
+      let mkMax = 0;
+      let sigmaCMax = 0;
+      metrosData.forEach(d => {
+        if (Math.abs(d.mk) > Math.abs(mkMax)) mkMax = d.mk;
+        if (d.sigmaC > sigmaCMax) sigmaCMax = d.sigmaC;
+      });
+
+      const elNkTopo = document.getElementById('lblResumoNkTopo');
+      if (elNkTopo) elNkTopo.innerText = `${nTopo.toFixed(2)} tf`;
+      const elNkPonta = document.getElementById('lblResumoNkPonta');
+      if (elNkPonta) elNkPonta.innerText = `${lastM.nk.toFixed(2)} tf`;
+      const elMkMax = document.getElementById('lblResumoMkMax');
+      if (elMkMax) elMkMax.innerText = `${mkMax.toFixed(2)} tf·m`;
+      const elSigmaC = document.getElementById('lblResumoSigmaC');
+      if (elSigmaC) elSigmaC.innerText = `${sigmaCMax.toFixed(2)} MPa ≤ ${sigmaCompDisp.toFixed(1)} MPa (OK)`;
+
+      const elProfTot = document.getElementById('lblTabelaProfTotal');
+      if (elProfTot) elProfTot.innerText = `${L.toFixed(2)}m`;
+
+      const elGrafMetodo = document.getElementById('lblGraficoMetodoInfo');
+      if (elGrafMetodo) {
+        let nomeM = 'Décourt-Quaresma (1996)';
+        if (metodoGeotAtivo === 'teixeira') nomeM = 'Teixeira (1996)';
+        else if (metodoGeotAtivo === 'aoki') nomeM = 'Aoki-Velloso (1975)';
+        else if (metodoGeotAtivo === 'antunes') nomeM = 'Antunes-Cabral';
+        elGrafMetodo.innerText = `Método ${nomeM} · NBR 6122`;
+      }
+
+      // 5. Renderizar Gráfico de Carga x Resistência (Chart.js)
+      renderGraficoResistenciaMetro(metrosData);
+
+      // 6. Renderizar os 4 SVGs de Diagramas
+      const svgN = document.getElementById('svgDiagNormal');
+      const svgV = document.getElementById('svgDiagCortante');
+      const svgM = document.getElementById('svgDiagMomento');
+      const svgD = document.getElementById('svgDiagDeslocamento');
+      if (!svgN) return;
+
+      const nPonta = lastM.nk;
+      const n25 = metrosData[Math.floor(metroFinal * 0.25)]?.nk || (nTopo * 0.85);
+      const n50 = metrosData[Math.floor(metroFinal * 0.50)]?.nk || (nTopo * 0.65);
       const dTopo = Math.min(Math.max((vTopo * 4.5), 0.5), 8.0);
 
-      const W = 200, H = 340;
-      const topY = 30, botY = 310;
+      const W = 200, H = 320;
+      const topY = 25, botY = 295;
       const zeroX = 35;
 
       // 1. Normal (área laranja)
@@ -2200,12 +2588,12 @@
       let outM = `
         <line x1="${zeroM}" y1="${topY}" x2="${zeroM}" y2="${botY}" stroke="#1e293b" stroke-width="2" />
         <polygon points="${zeroM},${topY} 60,${topY + 70} 70,${topY + 120} 95,${topY + 180} ${zeroM},${botY}" fill="#fef08a" stroke="#ca8a04" stroke-width="1.5" />
-        <text x="50" y="${topY + 74}" font-family="monospace" font-size="10" font-weight="bold" fill="#a16207">-${mMax.toFixed(2)} tfm</text>
+        <text x="50" y="${topY + 74}" font-family="monospace" font-size="10" font-weight="bold" fill="#a16207">-${Math.abs(mkMax).toFixed(2)} tfm</text>
         <text x="${zeroM + 5}" y="${topY + 4}" font-family="monospace" font-size="9" fill="#64748b">0.00</text>
       `;
       svgM.innerHTML = outM;
       const lblMom = document.getElementById('lblDiagMomentoMax');
-      if (lblMom) lblMom.innerText = `M_máx = -${mMax.toFixed(2)} tf·m`;
+      if (lblMom) lblMom.innerText = `M_máx = -${Math.abs(mkMax).toFixed(2)} tf·m`;
 
       // 4. Deslocamento (curva vermelha)
       const zeroD = 60;
@@ -2346,11 +2734,65 @@
       document.getElementById('lblResumoGaiolaTexto').innerText = `${nBarras} Ø ${bitolaMm} mm (L = ${Lg.toFixed(2)} m) · Total: ${(pesoTot_long + pesoTot_est).toFixed(1)} kg`;
     }
 
-    function atualizarRelatorio(nEstacas, bX, bY, hb, L, padm, maxR) {
+    function atualizarRelatorio(nEstacas, bX, bY, hb, L, padm, maxR, estacaMaxId, padmt) {
       const repBloco = document.getElementById('repBlocoTipo');
       if (repBloco) repBloco.innerText = `${nEstacas} Estacas (${bX.toFixed(2)} × ${bY.toFixed(2)} m, h=${hb.toFixed(2)}m)`;
       const repProf = document.getElementById('repProfEstaca');
       if (repProf) repProf.innerText = `L = ${L.toFixed(2)} m`;
+      const repPadm = document.getElementById('repPadmAdot');
+      if (repPadm) repPadm.innerText = `${padm.toFixed(2)} tf / estaca`;
+
+      const repCritica = document.getElementById('repEstacaCriticaId');
+      if (repCritica) repCritica.innerText = estacaMaxId || 'E1';
+      const repNsd = document.getElementById('repNsdCalcVal');
+      if (repNsd) repNsd.innerText = maxR.toFixed(2);
+      const repPadmComp = document.getElementById('repPadmCompVal');
+      if (repPadmComp) repPadmComp.innerText = padm.toFixed(2);
+      const repPadmTrac = document.getElementById('repPadmTracVal');
+      if (repPadmTrac) repPadmTrac.innerText = (padmt || 0).toFixed(2);
+
+      const dCm = parseFloat(document.getElementById('diametroEstaca')?.value) || 40;
+      const tipoSel = document.getElementById('tipoEstaca');
+      const tipoNome = tipoSel ? tipoSel.options[tipoSel.selectedIndex]?.text : 'Hélice Contínua';
+      const repEst = document.getElementById('repEstacaTipo');
+      if (repEst) repEst.innerText = `${tipoNome} Ø${dCm}cm`;
+
+      const fx = parseFloat(document.getElementById('esforcoFx')?.value) || 0;
+      const fy = parseFloat(document.getElementById('esforcoFy')?.value) || 0;
+      const vTopo = Math.hypot(fx, fy) / (nEstacas || 1);
+      const repCort = document.getElementById('repCortanteVal');
+      if (repCort) repCort.innerText = `${vTopo.toFixed(2)} tf`;
+
+      const nBarras = parseInt(document.getElementById('inpNumBarras')?.value) || 6;
+      const bitola = parseFloat(document.getElementById('selBitolaLong')?.value) || 10.0;
+      const asLong = (nBarras * Math.PI * Math.pow(bitola / 10, 2) / 4);
+      const repArmL = document.getElementById('repArmLongTexto');
+      if (repArmL) repArmL.innerHTML = `${nBarras} &phi; ${bitola.toFixed(1)} mm (As = ${asLong.toFixed(2)} cm²)`;
+
+      const Lg = parseFloat(document.getElementById('inpCompGaiola')?.value) || 4.0;
+      const repGaiola = document.getElementById('repGaiolaComp');
+      if (repGaiola) repGaiola.innerText = `${Lg.toFixed(2)} m`;
+
+      const bitolaEst = parseFloat(document.getElementById('selBitolaEstribo')?.value) || 6.3;
+      const espacEst = parseFloat(document.getElementById('inpEspacEstribo')?.value) || 15;
+      const repArmT = document.getElementById('repArmTransTexto');
+      if (repArmT) repArmT.innerHTML = `Estribos &phi; ${bitolaEst.toFixed(1)} mm c/ ${espacEst} cm`;
+
+      const fck = parseFloat(document.getElementById('inpFck')?.value) || 30;
+      const gammaC = parseFloat(document.getElementById('inpGammaC')?.value) || 1.4;
+      const Ac_cm2 = (Math.PI * Math.pow(dCm, 2)) / 4;
+      const fcd_MPa = fck / gammaC;
+      const Nrd_tf = (Ac_cm2 * 0.85 * fcd_MPa / 100) * 0.10197;
+      const Nsd_tf = maxR * 1.4;
+      const repNrd = document.getElementById('repNrdVal');
+      if (repNrd) repNrd.innerText = `${Nrd_tf.toFixed(2)} tf`;
+      const repNsdEl = document.getElementById('repNsdVal');
+      if (repNsdEl) repNsdEl.innerText = `${Nsd_tf.toFixed(2)} tf`;
+      const repFs = document.getElementById('repFsEstrut');
+      if (repFs) {
+        const fs = Nsd_tf > 0 ? (Nrd_tf / Nsd_tf) : 99;
+        repFs.innerHTML = `FS = ${fs.toFixed(2)} ${fs >= 1 ? 'OK' : 'NÃO ATENDE'}`;
+      }
     }
 
     // Persistência com LocalStorage
@@ -2358,10 +2800,11 @@
       if (isRestoringEstacas) return;
       try {
         const ids = [
-          'presetSondagem', 'nivelAgua', 'selNumEstacas', 'inpHbBloco', 'inpHaArranque',
+          'inpNomeObra', 'presetSondagem', 'nivelAgua', 'selNumEstacas', 'inpHbBloco', 'inpHaArranque',
           'tipoEstaca', 'diametroEstaca', 'inpEspacamento', 'comprimentoEstaca',
           'cobrimentoLateral', 'inpEmbutimento', 'esforcoNk', 'esforcoFx', 'esforcoFy',
-          'esforcoMx', 'esforcoMy', 'selMetodoAtivo', 'selBitolaLong', 'inpNumBarras',
+          'esforcoMx', 'esforcoMy', 'selMetodoAtivo', 'selFck', 'inpFck', 'inpGammaC',
+          'inpSobreconsumo', 'selTipoAco', 'selBitolaLong', 'inpNumBarras',
           'inpCompGaiola', 'selTipoEstribo', 'selBitolaEstribo', 'inpEspacEstribo'
         ];
         const data = { values: {}, timestamp: Date.now() };
@@ -2388,6 +2831,11 @@
         for (const [id, val] of Object.entries(data.values)) {
           const el = document.getElementById(id);
           if (el && val !== undefined && val !== null) el.value = val;
+        }
+        if (data.values['inpNomeObra']) {
+          const inp = document.getElementById('inpNomeObra');
+          if (inp) inp.value = data.values['inpNomeObra'];
+          atualizarNomeObra();
         }
         if (data.values['selMetodoAtivo']) metodoGeotAtivo = data.values['selMetodoAtivo'];
         isRestoringEstacas = false;
